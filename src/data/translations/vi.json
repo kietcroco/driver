@@ -1,0 +1,34 @@
+{
+	"name": "Việt Nam",
+	"code": "vi",
+	"data": {
+		"updater": {
+			"init_app": "Đang khởi động",
+			"update_available": "Có phiên bản cập nhật mới",
+			"optional_update_message": "Đã có phiên bản mới bạn có muốn cài đặt?",
+			"mandatory_update_message": "Vui lòng cập nhật ứng dụng",
+			"optional_install_buttonLabel": "Cài đặt",
+			"optional_ignore_button_label": "Bỏ qua",
+			"mandatory_continue_button_label": "Tiếp tục",
+			"description_prefix": "Mô tả: ",
+			"checking_for_update": "Kiểm tra phiên bản",
+			"downloading_prefix": "Đang tải",
+			"downloading": "kiểm tra kết nối",
+			"awaiting_user_action": "Đang chờ xác nhận",
+			"installing_update": "Đang cài đặt",
+			"up_to_date": "Đã cập nhật",
+			"update_cancelled_by_user": "Huỷ",
+			"update_installed": "Cài đặt sẽ được áp dụng khi khởi động lại ứng dụng",
+			"unknown_error": "Lỗi",
+			"update_successfully": "Cập nhật thành công",
+			"update_failed": "Cập nhật không thành công",
+			"clear_cache": "Xoá cache"
+		},
+		"alert": {
+			"exit_title": "Thông báo",
+			"exit_message": "Bạn có muốn thoát?",
+			"exit_ok": "OK",
+			"exit_cancel": "Huỷ"
+		}
+	}
+}

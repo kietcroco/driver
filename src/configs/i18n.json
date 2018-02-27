@@ -1,0 +1,9 @@
+{
+    "defaultLocale": "vi",
+    "fallbacks": true,
+    "syncKey": "@i18n:currentLocale",
+    "locales": {
+        "vi": "https://raw.githubusercontent.com/ro31337/libretaxi/master/locales/vi.json",
+        "en": "https://raw.githubusercontent.com/ro31337/libretaxi/master/locales/en.json"
+    }
+}

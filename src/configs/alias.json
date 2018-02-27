@@ -1,0 +1,8 @@
+{
+    "APPLICATION_ALIAS": "App",
+    "CACHE_MANAGER": "CacheManager",
+    "REGISTRY": "Registry",
+    "REDUX_REGISTRY": "ReducerRegistry",
+    "EPIC_REGISTRY": "EpicRegistry",
+    "HELPER_TRANSLATE": "translate"
+}

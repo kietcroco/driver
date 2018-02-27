@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "175761036067",
+    "firebase_url": "https://itvinadriver-1515634906135.firebaseio.com",
+    "project_id": "itvinadriver-1515634906135",
+    "storage_bucket": "itvinadriver-1515634906135.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175761036067:android:becf36d5342ac2af",
+        "android_client_info": {
+          "package_name": "com.itvinadriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175761036067-ph507td8sm3fnq3hfllfbbip7vgbthd2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.itvinadriver",
+            "certificate_hash": "d86e1dffa8ee27a3d242fd2cae096efbaa48a3c6"
+          }
+        },
+        {
+          "client_id": "175761036067-9uvr0vcd72hkueqbu42panomt6f0bi9t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-i8cGSfbOy_Y0B9VB9_UwXRkOjABQP9I"
+        }
+      ],
+      "services": {
+        "analytics-service": {
+          "analytics_property": {
+            "tracking_id": "UA-112873270-1"
+          }
+        },
+        "analytics_service": {
+          "analytics_property": {
+            "tracking_id": "UA-112873270-1"
+          },
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "175761036067-9uvr0vcd72hkueqbu42panomt6f0bi9t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

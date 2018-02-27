@@ -1,0 +1,7 @@
+{
+    "REDUCER_KEY": "@auth", // key redux
+    "LOGOUT": "@auth#logout", // action logout
+    "LOGIN": "@auth#login", // action login
+    "SET_AUTHORIZATION": "@auth#setAuthorization", // action set lại token
+    "SET_AUTH_IDENTITY": "@auth#setAuthIdentity" // action set lại auth
+}

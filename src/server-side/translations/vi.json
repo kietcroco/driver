@@ -1,0 +1,72 @@
+{
+    "alert": {
+        "title": "Thông báo",
+        "error": "Lỗi hệ thống",
+        "success": "Thành công"
+    },
+    "member": {
+        "login": {
+            "phone_placeholder": "Vui lòng nhập số điện thoại",
+            "login_label": "Đăng nhập",
+            "mobile_invalid": "Số điện thoại không chính xác",
+            "waiting": "Đang xử lý",
+            "login_failed": "Đăng nhập không thành công",
+            "not_yet_account": "Vui lòng đăng ký tài khoản",
+            "login_success": "Đăng nhập thành công",
+            "login_comfirm_active": "Vui lòng xác nhận số điện thoại"
+        },
+        "comfirm_active": {
+            "comfirm_title_message": "Nhập mã xác nhận tài khoản của bạn",
+            "comfirm_code_placeholder": "Mã xác nhận",
+            "comfirm_resend_code": "Gửi lại mã",
+            "comfirm_waiting_5minute": "Xin đợi ít nhất 5 phút trước khi yêu cầu mã khác",
+            "comfirm_submit": "Xác nhận",
+            "comfirm_cancel": "Huỷ bỏ",
+            "mobile_invalid": "Số điện thoại không chính xác",
+            "code_invalid": "Mã active không hợp lệ",
+            "comfirm_failed": "Xác thực không thành công"
+        },
+        "register": {
+            "register_title_message": "Đăng ký tài khoản",
+            "register_submit": "Đăng ký",
+            "register_cancel": "Hủy bỏ",
+            "register_mobile": "Số điện thoại",
+            "register_fullname": "Tên đầy đủ",
+            "register_email": "Địa chỉ email",
+            "register_address": "Địa chỉ"
+        },
+        "validate": {
+            "info": "Vui lòng nhập đầy đủ thông tin"
+        }
+    },
+    "list_message": {
+        "empty_message": "Không có dữ liệu",
+        "pull_to_refresh": "Kéo xuống để tải lại"
+    },
+    "maps": {
+        "search_placeholder": "Tìm vị trí",
+        "search_history": "Lịch sử tìm kiếm"
+    },
+    "fleets": {
+        "state": {
+            "RUNNING": "Đang chạy",
+            "STOP": "Nghỉ",
+            "FIXING": "Đang đậu"
+        },
+        "attr": {
+            "license_code": "Biển số xe",
+            "type": "Loại xe",
+            "make": "Hãng sản xuất",
+            "model": "Model",
+            "weight": "Tải trọng"
+        },
+        "create": "Tạo mới"
+    },
+    "feets_detail": {
+        "delete_feet": "Xóa phương tiện",
+        "update_feet": "Cập nhật, chỉnh sửa xe",
+        "history_journey": "Lịch sử hành trình",
+        "feet_all": "Tất cả",
+        "start_journey": "Bắt đầu hành trình"
+    }
+}

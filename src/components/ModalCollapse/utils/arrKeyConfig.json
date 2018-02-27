@@ -1,0 +1,17 @@
+[
+	"isInsert",
+	"isInput",
+	"isSelectAll",
+	"isOther",
+	"isMulti",
+	"isSearch",
+	"hideLabel",
+	"rowID",
+	"autoCheck",
+	"value",
+	"label",
+	"otherLabel",
+	"otherValue",
+	"checked",
+	"children"
+]

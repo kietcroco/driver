@@ -1,0 +1,7 @@
+{
+    "AUTHORIZATION": "authorization", // token
+    "AUTH_IDENTITY": "authIdentity", // Identity
+    "ONESIGNAL_PLAYER_ID": "notificationPlayerID", // player id của onesignal
+    "NOTIFICATION_TOKEN": "notificationToken", // token dùng cho server notification
+    "UNREAD_NOTIFICATION_NUMBER": "unreadNotification" // số thông báo chưa đọc
+}

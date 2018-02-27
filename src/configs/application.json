@@ -1,0 +1,8 @@
+{
+	"apiDomain": "http://api.gobook.vn/api", // api
+	"apiNotification": "https://notifications.izifix.com/api", // api notification
+	"domain": "http://api.gobook.vn/",
+	"googleAnalyticsID": "UA-112873270-1",
+	"itemPerPage": 20, // limit listin
+	"itemPerPageNotification": 10 // limit listin notification
+}
