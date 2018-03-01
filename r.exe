@@ -45,6 +45,7 @@ https://console.developers.google.com/apis/credentials?project=itvinadriver-1515
 - các service của google
 https://developers.google.com/android/guides/setup
 
+<<<<<<< HEAD:README.md
 # Ghi chú
 - Kết quả đăng nhập bằng số đt trả về từ server
 > [
@@ -53,3 +54,8 @@ https://developers.google.com/android/guides/setup
 > 'AUTHENTICATED' => 'Đã đăng nhập trước đó',
 > 'ERROR' => 'Lỗi',
 > ];
+=======
+chmod a+x Fabric.framework/uploadDSYM
+chmod a+x Fabric.framework/run
+chmod a+x Crashlytics.framework/uploadDSYM
+>>>>>>> fefc551cb28241de54fe6e38467f0f7cf9717a04:r.exe
