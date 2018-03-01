@@ -11,7 +11,7 @@
       ],
       "plugins": [
         "transform-react-display-name",
-        //"transform-react-pure-class-to-function"
+        "transform-react-pure-class-to-function"
       ]
     },
     "production": {
@@ -20,6 +20,7 @@
         "react-native-stage-0/decorator-support"
       ],
       "plugins": [
+        "transform-remove-strict-mode",
         "transform-remove-console",
         "transform-react-pure-class-to-function",
         [

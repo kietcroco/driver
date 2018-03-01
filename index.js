@@ -1,4 +1,4 @@
-import { AppRegistry, YellowBox } from 'react-native';
+import { AppRegistry, YellowBox, AsyncStorage } from 'react-native';
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
 
 if( __DEV__ ) {
@@ -7,6 +7,15 @@ if( __DEV__ ) {
     // const YellowBox = require('react-native').YellowBox;
     // console.log(YellowBox.ignoreWarnings);
     //YellowBox.ignoreWarnings(require("./ignoredYellowBox"));
+
+    const ThrottledPromise = require('~/library/ThrottledPromise').default;
+    AsyncStorage.getAllKeys = ThrottledPromise(AsyncStorage.getAllKeys, 3000);
+    AsyncStorage.getItem = ThrottledPromise(AsyncStorage.getItem, 3000);
+    AsyncStorage.multiGet = ThrottledPromise(AsyncStorage.multiGet, 3000);
+    AsyncStorage.mergeItem = ThrottledPromise(AsyncStorage.mergeItem, 3000);
+    AsyncStorage.multiMerge = ThrottledPromise(AsyncStorage.multiMerge, 3000);
+    AsyncStorage.removeItem = ThrottledPromise(AsyncStorage.removeItem, 3000);
+    AsyncStorage.setItem = ThrottledPromise(AsyncStorage.setItem, 3000);
 } else {
     // report crash error
     setJSExceptionHandler((error, isFatal) => {

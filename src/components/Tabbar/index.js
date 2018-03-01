@@ -1,7 +1,7 @@
 "use strict";
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text,TouchableOpacity } from 'react-native';
 import { sizes } from '~/configs/styles';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
@@ -30,7 +30,7 @@ class Tabbar extends React.Component {
     }
 
     render() {
-
+        const { navigation } = this.props;
         // console.log(this.props.getScreenDetails(this.props.scene) );
 
         return (
@@ -41,32 +41,36 @@ class Tabbar extends React.Component {
                 flexDirection: "row",
                 justifyContent: "space-around"
             }}>
-                <View style={{
+                <TouchableOpacity style={{
                     flex: 1,
                     // backgroundColor: "yellow",
                     justifyContent: "center",
                     alignItems: "center"
-                }}>
+                }}
+                    onPress={() => navigation.navigate('/home')}
+                >
                     <IonIcon name="md-home" style={{
                         fontSize: 28
                     }}/>
                     <Text style={{
                         fontSize: 12
                     }}>Home</Text>
-                </View>
-                <View style={{
-                    flex: 1,
-                    // backgroundColor: "blue",
-                    justifyContent: "center",
-                    alignItems: "center"
-                }}>
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                        flex: 1,
+                        // backgroundColor: "blue",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}
+                    onPress={() => navigation.navigate('/setting')}
+                >
                     <IonIcon name="md-settings" style={{
                         fontSize: 28
                     }}/>
                     <Text style={{
                         fontSize: 12
                     }}>Cài đặt</Text>
-                </View>
+                </TouchableOpacity>
                 <View style={{
                     flex: 1,
                     // backgroundColor: "red",

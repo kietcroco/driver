@@ -15,21 +15,7 @@ class FleetDetail extends React.Component {
 	static displayName = "@Home";
 
 	static navigationOptions = (navigation) => {
-		return {
-			// title: '',
-			headerRight: (
-				<TouchableOpacity
-					onPress={() => {
-						navigation.navigate('/fleet/fleet-create');
-					}}
-					style={{
-						width: 40,
-						justifyContent: 'center',
-						alignItems: 'center'
-					}}>
-				</TouchableOpacity>
-			)
-		}
+		return {}
 	};
 
 	constructor(props) {
@@ -168,15 +154,10 @@ const _styles = {
 	container: {
 		flex: 1
 	},
-	fleet_item: {
-		// flexDirection: 'row',
-		// marginVertical: sizes.margin,
-		// paddingHorizontal: sizes.large
-	},
+	fleet_item: {},
 	fleet_title: {
 		marginVertical: sizes.margin,
 		marginHorizontal: sizes.margin,
-		//paddingHorizontal: sizes.large,
 		borderTopColor: colors.separatorBackgroundColor,
 		borderTopWidth: sizes.separatorHeight
 	},

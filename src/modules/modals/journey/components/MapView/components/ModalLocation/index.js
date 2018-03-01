@@ -18,10 +18,10 @@ const Geo = new GooglePlaceService({
 const a = createClient({
     key: "AIzaSyC-i8cGSfbOy_Y0B9VB9_UwXRkOjABQP9I"
 });
-var b = a.placesAutoComplete({
-    input: "Hồ chí minh"
-}, (...c) => console.log(c));
-console.log(b)
+// var b = a.placesAutoComplete({
+//     input: "Hồ chí minh"
+// }, (...c) => console.log(c));
+// console.log(b)
 class ModalLocation extends React.Component {
 
     static displayName = "@ModalLocation";

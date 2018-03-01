@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "com-itvinadriver",
+  "private_key_id": "286d1bd504625003f0a1411dced8697ee365344d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDVBuKG5nXs0i/N\nWJbsYGKZc7o6FeoUnPfabVhvnDPJ/vBzGCrt6yqIoXEdsE/EWX8gzQ3rohN++d3u\nSljlZOfZQVScloo4SxUE8wzcm6Uy17Uzm8i2F7iSEbjImfSaNGxKDe4B9XOCIAa5\nODxk7cO9YVbIaZCl307wJe9xSoqse5HWR4gE4FPs4EwXe3VRVjUsGTw8FTDk2wt6\nZM58vrhOtRjS3v1xvYBIgR0GpMCPx17aqj69ULkyYxuD04IqP8cnB1svQcYLImVr\nxvGP3s0j2CtAwm6AlTeN7/ioybS9pJVzzdya7TM4VfiV28hKWOpHgeZGFlR+7JBi\nDfW+gh0xAgMBAAECggEAEKb4IDl1sGyBxhiNu66RJpOwVAgQg0n96fowNpFMTxb5\nrtWNzYlbitCr6fk1UxD36hV9aBUEVyGrIox3RH9NzGLZ/V+bMGlWHEvvjnMwR7gq\n9vzPhMR37hsqiavXPhKpAGT0XPzV6a8dN29Y8T7Q1UX9pa7y2rSJFCay//Umv/LI\nYhtaXS5bp/1JGxT7jkCpftuE2+b0NjOLCBZQfJHh95mfBdM83IfyEjymHUD/ao37\nX2F8Kti3yjAG4X6CuFQhXk3J6SI7KrirFOffYSH81goIdps+xPdCqUJ/1aZZ9JN1\n/3BbGBqHkKq3LWrfLHWtZ/eLKZ7Z7lGdHSfLo8sIXQKBgQDpwhF58AppX91kvGs8\nounGFOcPn0MQksAnt3MR6oKmegnnfzAOLjC4zuyYr/k3Mrf/AN0Iq3dkMCUwVrVj\nXXQHDJEfcWCI+X5RKVUwTLxTUT2FyiS8NhWch8IzIXcutrGDcYw2Z+wmxY9hdkIE\naThDj3z8KKcCpok9y7NI1gHEQwKBgQDpS9d8o9DTy/o0PgalJ/EE069Qq58Zt4IE\ngsO8IJUwydh8KSUuVqX7/CrpSMXJpfKLgc9uuE6hqybtv6mHJZnx2j3bDWBMj+zY\nqm+KvnGuVy7Vmmjbzl6kvhAiXeMoleUZjzTHtOWUzwH2nGAE+YVMihk/AczjJtCW\nQluilbdbewKBgHbip6a/iVwMUHnyRgvhw0llyhos4pvkNuw8Jb7f6TCn8q+VBSjB\nHzButO/216XWGrQLiV7mbeM7hT5vavMtTVxkbM50CCfB1BeNEPFupX0uXT7VDxfV\n3entNbxxcb8FVYTHVAs7kWQqqABmd67soJvjtyo7tqzna/dMyVLq3J0nAoGAfg0e\nZxfT8zvY+nUw/fdwwFzn8rxoAGsocut8ep9YPL4ynBNXJYxnrpj3ToilZWimfj4r\nJ/WpdqyVIgxWutDUNtrmZP77MyLoo8Ci9+IiZkJw6bS+R1Vfyb9v1EHKRNmIqaC4\nsdbJ3PdkZizjrIxtO4e6UFLWszz7otRD0rr2ERUCgYBJbw8vHhoWg3/PLaEuZDm+\nQa8/boCSh5bvFMD9jjJuJcYL3ruTygDmpXAtgpx0LkKhBSmVYSYqNCgAaOjY0CdU\nMDNKsOe9cS1lGy39UEeEPblaj9FciJytb8h0DJ+362yVuRDz4VAVKQAU5vkdgebL\nMFGLUTIHnZVlKpRbKiPYzA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-crashreporting-cmsfy@com-itvinadriver.iam.gserviceaccount.com",
+  "client_id": "112189195027139237192",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-crashreporting-cmsfy%40com-itvinadriver.iam.gserviceaccount.com"
+}

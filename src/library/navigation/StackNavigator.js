@@ -1,44 +1,75 @@
 import React from 'react';
-import { StackRouter, createNavigator, NavigationActions } from 'react-navigation';
-import ModalTransitioner from './components/ModalTransitioner';
+import { StackRouter, createNavigator, NavigationActions, createNavigationContainer } from 'react-navigation';
+// import ModalTransitioner from './components/ModalTransitioner';
 
-export default ( routeConfigMap, configs = {}, Transitioner = ModalTransitioner ) => {
+/**
+ * @todo Custom StackNavigator
+ * @description mục đích trỏ Transitioner về custom Transitioner
+ * @see react-navigation version 1.2.1
+ * @author Croco
+ * @since 28-2-2018
+ * @param routeConfigMap: Object map route
+ * @param stackConfig: config
+ * @param Transitioner: component Transitioner
+ */
+export default (routeConfigMap, stackConfig = {}, Transitioner ) => {
 
+	Transitioner = Transitioner || require('./components/ModalTransitioner').default;
+	
 	const {
+		initialRouteName,
+		initialRouteParams = {},
+		paths,
 		headerMode = "screen",
+		headerTransitionPreset,
 		mode = "card",
 		cardStyle,
 		transitionConfig,
 		onTransitionStart,
 		onTransitionEnd,
+		navigationOptions,
 		lazy = false,
 		onlyActive = false,
-		footerMode = "none"
-	} = configs;
+		footerMode = "none",
+		order, // ?: string[]; // todo: type these as the real route names rather than 'string'
+		backBehavior // ?: 'none' | 'initialRoute'; // defaults `initialRoute`
+	} = stackConfig;
 
-	const router = StackRouter( routeConfigMap, configs );
+	const router = StackRouter(routeConfigMap, {
+		initialRouteName,
+		paths,
+		initialRouteParams,
+		navigationOptions,
+		order,
+		backBehavior
+	});
 
-	const Navigation = createNavigator( router, routeConfigMap, configs, "STACK" )( props => {
+	const navigator = createNavigator(router, routeConfigMap, stackConfig)( props => {
 
 		return (
 			<Transitioner 
-				{ ...props }
-				headerMode 				= { headerMode }
-				mode 					= { mode }
-				cardStyle 				= { cardStyle }
-				transitionConfig 		= { transitionConfig }
-				onTransitionStart 		= { onTransitionStart }
-				onTransitionEnd 		= { onTransitionEnd }
-				lazy 					= { lazy }
-				onlyActive 				= { onlyActive }
-				footerMode 				= { footerMode }
+				{...props}
+				headerMode             = {headerMode}
+				headerTransitionPreset = {headerTransitionPreset}
+				mode                   = {mode}
+				cardStyle              = {cardStyle}
+				transitionConfig       = {transitionConfig}
+				onTransitionStart      = {onTransitionStart}
+				lazy                   = {lazy}
+				onlyActive             = {onlyActive}
+				footerMode             = {footerMode}
+				onTransitionEnd		   = {(lastTransition, transition) => {
+					const { state: { key } = {}, dispatch } = props.navigation;
+					dispatch(NavigationActions.completeTransition({ key }));
+					onTransitionEnd && onTransitionEnd();
+				}}
 			/>
 		);
 	} );
 
 	const prevGetStateForAction = router.getStateForAction;
 
-	Navigation.router = {
+	navigator.router = {
 		...router,
 		getStateForAction: ( action, state ) => {
 
@@ -64,5 +95,5 @@ export default ( routeConfigMap, configs = {}, Transitioner = ModalTransitioner 
 		}
 	};
 
-	return Navigation;
+	return createNavigationContainer(navigator);
 };

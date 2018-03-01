@@ -1,6 +1,6 @@
 <resources>
     <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey"></string>
-    <string name="app_name">ITVINADriver</string>
+    <!--<string name="app_name">ITVINADriver</string> -->
     <!--<string name="account_type">com.itvinadriver.account</string>-->
     <!--<string name="content_authority">com.itvinadriver.authority</string>-->
 

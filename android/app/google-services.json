@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "175761036067",
-    "firebase_url": "https://itvinadriver-1515634906135.firebaseio.com",
-    "project_id": "itvinadriver-1515634906135",
-    "storage_bucket": "itvinadriver-1515634906135.appspot.com"
+    "project_number": "766010181102",
+    "firebase_url": "https://com-itvinadriver.firebaseio.com",
+    "project_id": "com-itvinadriver",
+    "storage_bucket": "com-itvinadriver.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:175761036067:android:becf36d5342ac2af",
+        "mobilesdk_app_id": "1:766010181102:android:becf36d5342ac2af",
         "android_client_info": {
           "package_name": "com.itvinadriver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "175761036067-ph507td8sm3fnq3hfllfbbip7vgbthd2.apps.googleusercontent.com",
+          "client_id": "766010181102-snt66gqvp7gtmt6h320dec81boamcbvs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.itvinadriver",
@@ -23,33 +23,32 @@
           }
         },
         {
-          "client_id": "175761036067-9uvr0vcd72hkueqbu42panomt6f0bi9t.apps.googleusercontent.com",
+          "client_id": "766010181102-4d6a7g8jbo9sa3fempi19k1vs5c5e37t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC-i8cGSfbOy_Y0B9VB9_UwXRkOjABQP9I"
+          "current_key": "AIzaSyA5KpUo2_OzqhggLJOQDmXTfzR2LLhGf2Y"
         }
       ],
       "services": {
-        "analytics-service": {
-          "analytics_property": {
-            "tracking_id": "UA-112873270-1"
-          }
-        },
         "analytics_service": {
-          "analytics_property": {
-            "tracking_id": "UA-112873270-1"
-          },
           "status": 1
         },
         "appinvite_service": {
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "175761036067-9uvr0vcd72hkueqbu42panomt6f0bi9t.apps.googleusercontent.com",
+              "client_id": "766010181102-4d6a7g8jbo9sa3fempi19k1vs5c5e37t.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "766010181102-8sivl5e3r5qqrj53ev5hsbuk4ht8ggvg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.itvinadriver"
+              }
             }
           ]
         },

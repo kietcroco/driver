@@ -68,5 +68,12 @@
         "history_journey": "Lịch sử hành trình",
         "feet_all": "Tất cả",
         "start_journey": "Bắt đầu hành trình"
+    },
+    "setting": {
+        "title": "Cài đặt",
+        "wireless_networks": "Wireless & networks",
+        "language": "Ngôn ngữ",
+        "gps": "GPS",
+        "notification": "Thông báo"
     }
 }

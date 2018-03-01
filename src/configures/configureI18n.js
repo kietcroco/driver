@@ -168,5 +168,8 @@ export default async ( Cache, configs = {} ) => {
     // sự kiện thay đổi ngôn ngữ mặc định
     I18n.configDefaultLocale = onChangeLocale;
 
+    // init
+    I18n.locale = I18n.defaultLocale;
+
     return currentLocale;
 };

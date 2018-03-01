@@ -29,6 +29,10 @@
 			"exit_message": "Bạn có muốn thoát?",
 			"exit_ok": "OK",
 			"exit_cancel": "Huỷ"
+		},
+		"locales": {
+			"vi": "Tiếng việt",
+			"en": "English"
 		}
 	}
 }

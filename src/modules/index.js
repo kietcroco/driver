@@ -4,9 +4,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Navigation from './navigation';
-// import recursiveShallowEqual from '~/library/recursiveShallowEqual';
 import addNavigationHelpers from '~/library/navigation/addNavigationHelpers';
 import shallowEqual from 'fbjs/lib/shallowEqual';
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 // key reducer
 const reducerKey = "$$navigation";
@@ -19,23 +19,23 @@ class Navigator extends React.Component {
 	shouldComponentUpdate(nextProps) {
 
 		return (
-			!shallowEqual(this.props.screenProps, nextProps.screenProps) ||
 			!shallowEqual(this.props.navigationState, nextProps.navigationState) ||
+			!shallowEqual(this.props.screenProps, nextProps.screenProps) ||
 			!shallowEqual(this.props, nextProps)
 		);
-		// return (
-		// 	recursiveShallowEqual( this.props.screenProps, nextProps.screenProps ) ||
-		// 	recursiveShallowEqual( this.props.navigationState, nextProps.navigationState )
-		// );
 	}
 
 	render() {
 
 		const { navigationState, dispatch, ...otherProps } = this.props;
 
+		// event navigation
+		const addListener = createReduxBoundAddListener(reducerKey);
+
 		const navigation = addNavigationHelpers({
 			dispatch,
-			state: navigationState
+			state: navigationState,
+			addListener
 		});
 
 		return (

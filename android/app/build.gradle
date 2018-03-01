@@ -116,6 +116,9 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        
+        // tên app
+        resValue "string", "app_name", appName
 
         // background geolocation maron85
         resValue "string", "account_type", defaultConfig.applicationId + ".account"
@@ -152,8 +155,8 @@ android {
 
             manifestPlaceholders = [
                 // onesignal
-                onesignal_app_id: "77a4b3b1-1e25-4906-a863-ab346b77ab9e",
-                onesignal_google_project_number: "175761036067"
+                onesignal_app_id: "1b697650-0894-4923-94fe-93dc98b01563",
+                onesignal_google_project_number: "766010181102"
             ]
 
             // GA
@@ -183,17 +186,17 @@ android {
 
             manifestPlaceholders = [
                 // onesignal
-                onesignal_app_id: "77a4b3b1-1e25-4906-a863-ab346b77ab9e",
-                onesignal_google_project_number: "175761036067"
+                onesignal_app_id: "1b697650-0894-4923-94fe-93dc98b01563",
+                onesignal_google_project_number: "766010181102"
             ]
 
             // GA
             resValue "string", "ga_trackingId", "UA-112873270-1"
 
             // facebook
-            resValue "string", "fb_app_id", ""
-            resValue "string", "fb_login_protocol_scheme", "fb" + ""
-            resValue "string", "fb_authority", "com.facebook.FacebookContentProvider" + ""
+            resValue "string", "fb_app_id", "123"
+            resValue "string", "fb_login_protocol_scheme", "fb" + "123"
+            resValue "string", "fb_authority", "com.facebook.FacebookContentProvider" + "123"
 
             // google service
             //resValue "string", "google_api_key", "AIzaSyC-i8cGSfbOy_Y0B9VB9_UwXRkOjABQP9I"
@@ -244,7 +247,7 @@ dependencies {
     compile(project(':react-native-firebase')) {
         transitive = false
     }
-    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.0@aar') {
         transitive = true
     }
     

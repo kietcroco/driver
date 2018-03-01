@@ -88,3 +88,5 @@
 #-keep android.net.http.**
 #-keep org.apache.**
 -dontwarn com.facebook.**
+-dontwarn io.invertase.firebase.**
+-dontwarn ch.qos.logback.**

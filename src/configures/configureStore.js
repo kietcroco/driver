@@ -2,6 +2,7 @@ import { persistStore } from 'redux-persist';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
+import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 // import screenTracking from '~/middleware/screenTracking';
 // import logger from '~/middleware/logger';
 // import 'rxjs';
@@ -15,7 +16,8 @@ import thunk from 'redux-thunk';
 export default (reducers, rootEpic) => {
 
     const middleware = [
-        thunk
+        thunk,
+        createReactNavigationReduxMiddleware('$$navigation', state => state["$$navigation"])
     ];
 
     if (rootEpic) {
