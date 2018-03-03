@@ -13,7 +13,8 @@
 			"description_prefix": "Description: ",
 			"checking_for_update": "Checking for update",
 			"downloading_prefix": "Downloading",
-			"downloading": "Downloading package",
+			"downloading": "downloading {{package}}",
+			"connecting": "connecting",
 			"awaiting_user_action": "Awaiting user action",
 			"installing_update": "Installing update",
 			"up_to_date": "Up to date",
@@ -29,6 +30,11 @@
 			"exit_message": "Do you want to exit?",
 			"exit_ok": "OK",
 			"exit_cancel": "Cancel"
+		},
+		"locales": {
+			"language": "language",
+			"vi": "Tiếng việt",
+			"en": "English"
 		}
 	}
 }

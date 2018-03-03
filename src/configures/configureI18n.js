@@ -36,33 +36,42 @@ export const requireTranslation = (locale) => {
     return translation;
 };
 
-// hàm set lại Translation
-export const setTranslation = (locale, data = {}) => {
+/**
+ * @todo hàm set lại dữ liệu ngôn ngữ
+ */
+const setTranslation = (locale, data) => {
 
-    // set vào dữ liệu translate
+    var translation = I18n.getTranslation(locale) || {};
     data = data || {};
-    I18n.translations[locale] = I18n.translations[locale] || {};
-    I18n.translations[locale] = {
-        ...I18n.translations[locale],
+
+    I18n.setTranslation(locale, {
+        ...translation,
         ...data
-    };
-    return I18n.translations[locale];
+    });
 };
 
+/**
+ * @todo hàm khởi tạo ngôn ngữ
+ */
+const initTranslation = () => {
+
+    // require các locale tĩnh
+    for (let key in locales) {
+        if (locales.hasOwnProperty(key)) {
+
+            I18n.setTranslation(key, requireTranslation(key));
+        }
+    }
+};
 
 // init
 I18n.defaultLocale = defaultLocale;
 I18n.fallbacks = fallbacks;
 
-// require các locale tĩnh
-for (let key in locales) {
-    if (locales.hasOwnProperty(key)) {
-        setTranslation(key, requireTranslation(key));
-    }
-}
+initTranslation();
 
 // các ngôn ngữ đã được download
-I18n.translationLoaded = [];
+// I18n.translationLoaded = [];
 
 // hàm lấy ngôn ngữ hiện tại
 const getCurrentLocale = async () => {
@@ -91,10 +100,12 @@ export default async ( Cache, configs = {} ) => {
 
         // kiểm tra support
         locale = I18n.lookupWithoutFallback(locale, locales) || defaultLocale;
+        // lấy đường dẫn download
         const urlDownload = locales[locale];
         if (!urlDownload) {
             return;
         }
+
         var data = {};
 
         try {
@@ -124,33 +135,35 @@ export default async ( Cache, configs = {} ) => {
             } catch (e) {}
         }
 
-        I18n.translationLoaded.push(locale);
-
-        // set lại dữ liệu
-        return setTranslation(locale, data);
+        // // set lại dữ liệu
+        // return setTranslation(locale, data);
+        return data;
     };
-
-    try {
-        // init ngôn ngữ hiện tại
-        var currentLocale = await getCurrentLocale();
-        await I18n.loadTranslation(currentLocale);
-        I18n.locale = currentLocale;
-    } catch (error) {}
 
     // sự kiện thay đổi ngôn ngữ
     const onChangeLocale = async (locale) => {
 
         if (
             I18n.loadTranslation
-             && (
-                 !I18n.translationLoaded 
-                 || !I18n.translationLoaded.includes(locale)
-             )
+            //  && (
+            //      !I18n.translationLoaded 
+            //      || !I18n.translationLoaded.includes(locale)
+            //  )
         ) {
 
             try {
                 
-                await I18n.loadTranslation(locale);
+                // download
+                const data = await I18n.loadTranslation(locale);
+
+                // clear các dữ liệu ngôn ngữ khác
+                initTranslation();
+
+                // set lại dữ liệu ngôn ngữ hiện tại
+                setTranslation(locale, data);
+
+                // cache
+                // I18n.translationLoaded.push(locale);
             } catch (error) {}
         }
     };
@@ -170,6 +183,15 @@ export default async ( Cache, configs = {} ) => {
 
     // init
     I18n.locale = I18n.defaultLocale;
+
+    try {
+
+        // init ngôn ngữ hiện tại
+        var currentLocale = await getCurrentLocale();
+        // await I18n.loadTranslation(currentLocale);
+        I18n.locale = currentLocale;
+
+    } catch (error) {}
 
     return currentLocale;
 };

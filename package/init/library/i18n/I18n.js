@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import EventEmitter from '~/library/Events';
+import EventEmitter from '../Events/EmitEvent';
 
 var currentLocale = "en";
 var defaultLocale = "en";

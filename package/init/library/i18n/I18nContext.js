@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import I18n from './I18n';
-import EventEmitter from '~/library/Events';
+import EventEmitter from '../Events/EmitEvent';
 
 class I18nContext extends React.Component {
 

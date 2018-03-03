@@ -17,6 +17,7 @@ const I18nCache = CacheManager.resolve('i18n');
 // đăng ký biến App
 Alias.register(CACHE_MANAGER, CacheManager);
 
+// require sau khởi tạo Cache
 const Downloader = require('~/components/Downloader').default;
 const Application = require('~/application').default;
 
@@ -93,6 +94,7 @@ class Updater extends React.Component {
 
         InteractionManager.runAfterInteractions(() => setTimeout(async () => {
 
+            // nếu là android thì ẩn splash screen
             if ( Platform.OS === 'android' ) {
 
                 const SplashScreen = require('react-native-smart-splash-screen').default;
@@ -103,18 +105,22 @@ class Updater extends React.Component {
                 });
             }
 
+            // cấu hình ngôn ngữ
             try {
                 await configureI18n(I18nCache);
-            } catch (error) {}
+            } catch (error) { }
 
+            // kiểm tra cập nhật
             if( !__DEV__ ) {
 
                 try {
-    
+                    
+                    // code push
                     await this.syncImmediate();
                 } catch (e) {}
             }
 
+            // khởi tạo ứng dụng
             if (Application.init) {
 
                 const waitingApp = Application.init();
@@ -126,10 +132,12 @@ class Updater extends React.Component {
                 }
             }
 
+            // kiểm tra phiên bản
             if (!__DEV__) {
 
                 try {
-                    // kiểm tra phiên bản hiện tại
+                    
+                    // phiên bản trên code push
                     await this.getUpdateMetadata();
                 } catch (e) { }
             }
@@ -138,33 +146,76 @@ class Updater extends React.Component {
             // đóng loader
             if (__DEV__) {
 
-                this.setState({
-                    progress: false
-                });
+                setTimeout(() => {
+                    
+                    this.setState({
+                        progress: false
+                    });
+                }, 0);
             }
         }, 0));
     }
 
     componentWillUnmount() {
 
+        // cho phép code push khởi động lại app
         CodePush.allowRestart();
     }
 
     _onShowDownload = () => {
 
+        // không cho phép code push khởi động lại app
         CodePush.disallowRestart();
     };
 
     _onHideDownload = () => {
 
+        // cho phép code push khởi động lại app
         CodePush.allowRestart();
     };
 
+    /**
+     * @todo hàm xoá cache
+     */
+    _clearCache = async () => {
 
-    // hàm xử lý trạng thái sync của code push
+        // xoá cache
+        try {
+
+            await CacheManager.clearAll();
+            this.setState({
+                checking: true,
+                descriptionPrefix: "",
+                description: I18n.translate("updater.clear_cache")
+            });
+        } catch (error) { }
+
+        // xoá local store
+        try {
+
+            const localStoreAllKeys = await AsyncStorage.getAllKeys();
+            localStoreAllKeys = localStoreAllKeys || [];
+
+            // không xoá token
+            const syncKeyAuth = require("~/configs/user").syncKey;
+            if (localStoreAllKeys.length) {
+                localStoreAllKeys = localStoreAllKeys.filter(key => key !== syncKeyAuth);
+
+                await AsyncStorage.multiRemove(localStoreAllKeys);
+            }
+
+        } catch (error) { }
+    };
+
+    /**
+     * @todo hàm xử lý trạng thái code push 
+     * @author Croco
+     */   
     codePushStatusDidChange = async (syncStatus) => {
 
         switch (syncStatus) {
+
+            // đang kiểm tra phiên bản
             case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
                 this.setState({ 
                     checking: true,
@@ -172,13 +223,17 @@ class Updater extends React.Component {
                     description: I18n.translate("updater.checking_for_update")
                 });
                 break;
+
+            // đang download
             case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
                 this.setState({ 
                     checking: true,
                     descriptionPrefix: I18n.translate("updater.downloading_prefix"),
-                    description: I18n.translate("updater.downloading")
+                    description: I18n.translate("updater.connecting")
                 });
                 break;
+            
+            // đang chờ người dùng xác nhận
             case CodePush.SyncStatus.AWAITING_USER_ACTION:
                 this.setState({ 
                     checking: true,
@@ -186,6 +241,8 @@ class Updater extends React.Component {
                     description: I18n.translate("updater.awaiting_user_action")
                 });
                 break;
+            
+            // đang cài đặt
             case CodePush.SyncStatus.INSTALLING_UPDATE:
                 this.setState({ 
                     checking: true,
@@ -194,6 +251,8 @@ class Updater extends React.Component {
                 });
 
                 break;
+            
+            // đã cài đặt phiên bản mới nhất
             case CodePush.SyncStatus.UP_TO_DATE:
                 this.setState({ 
                     checking: false,
@@ -202,6 +261,8 @@ class Updater extends React.Component {
                     description: I18n.translate("updater.up_to_date")
                 });
                 break;
+            
+            // người dùng bỏ qua cập nhật
             case CodePush.SyncStatus.UPDATE_IGNORED:
                 this.setState({ 
                     checking: false,
@@ -210,6 +271,8 @@ class Updater extends React.Component {
                     description: I18n.translate("updater.update_cancelled_by_user")
                 });
                 break;
+            
+            // đã cài đặt
             case CodePush.SyncStatus.UPDATE_INSTALLED:
 
                 this.setState({ 
@@ -221,29 +284,8 @@ class Updater extends React.Component {
                 // xoá cache
                 try {
                     
-                    await CacheManager.clearAll();
-                    this.setState({
-                        checking: true,
-                        descriptionPrefix: "",
-                        description: I18n.translate("updater.clear_cache")
-                    });
+                    await this._clearCache();
                 } catch (error) {}
-
-                // xoá local store
-                try {
-
-                    const localStoreAllKeys = await AsyncStorage.getAllKeys();
-                    localStoreAllKeys = localStoreAllKeys || [];
-
-                    // không xoá token
-                    const syncKeyAuth = require("~/configs/user").syncKey;
-                    if (localStoreAllKeys.length) {
-                        localStoreAllKeys = localStoreAllKeys.filter(key => key !== syncKeyAuth);
-
-                        await AsyncStorage.multiRemove(localStoreAllKeys);
-                    }
-
-                } catch (error) { }
 
                 // down load ngôn ngữ
                 try {
@@ -251,14 +293,19 @@ class Updater extends React.Component {
                     await this.downloadTranslations();
                 } catch (error) {}
 
-                this.setState({
-                    checking: false,
-                    progress: false,
-                    descriptionPrefix: "",
-                    description: ""
-                });
+                setTimeout(() => {
+                    
+                    this.setState({
+                        checking: false,
+                        progress: false,
+                        descriptionPrefix: "",
+                        description: ""
+                    });
+                }, 0);
 
                 break;
+            
+            // lỗi
             case CodePush.SyncStatus.UNKNOWN_ERROR:
                 this.setState({ 
                     checking: false,
@@ -270,10 +317,29 @@ class Updater extends React.Component {
         }
     };
 
-    // hàm xử lý progress download code push
-    codePushDownloadDidProgress = (progress) => {
+    // hàm xử lý progress download
+    downloadProgress = (progress, name) => {
+        
+        let description = this.state.description;
 
-        this.setState({ progress });
+        if (name && typeof progress === "object") {
+            
+            const {
+                receivedBytes = 0,
+                totalBytes = 0
+            } = progress;
+    
+            if (totalBytes != 0 && receivedBytes >= 1 ) {
+                
+                description = I18n.translate('updater.downloading', {
+                    package: name
+                });
+            }
+        }
+        this.setState({ 
+            progress,
+            description
+        });
     };
 
     // An update is available but it is not targeting the binary version of your app.
@@ -281,18 +347,24 @@ class Updater extends React.Component {
 
     };
 
+    /**
+     * @todo hàm kiểm tra phiên bản code push
+     */
     getUpdateMetadata = async () => {
 
         try {
 
+            // lấy phiên bản hiện tại đang chạy
             const metadata = await CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING);
             if (metadata) {
                 this.setState({
                     version: `${metadata.appVersion}`
                 });
 
+                // nếu là mới cài đặt
                 if (metadata.isFirstRun) {
 
+                    // kiểm tra cập nhật lỗi
                     if (metadata.failedInstall) {
 
                         Alert.alert(I18n.translate("updater.update_failed"));
@@ -312,7 +384,6 @@ class Updater extends React.Component {
                 description: ""
             });
         }
-        
     };
 
     /** Update pops a confirmation dialog, and then immediately reboots the app */
@@ -337,31 +408,37 @@ class Updater extends React.Component {
                 }
             },
             this.codePushStatusDidChange,
-            this.codePushDownloadDidProgress,
+            this.downloadProgress,
             this.handleBinaryVersionMismatchCallback
         );
     };
 
+    /**
+     * @todo hàm tải file ngôn ngữ từ server
+     */
     downloadTranslations = () => {
 
         return new Promise( async ( resolve, reject ) => {
 
+            // lấy cấu hình ngôn ngữ được hỗ trợ
             const locales = require('~/configs/i18n').locales;
-
+            
             for (let locale in locales) {
                 if (locales.hasOwnProperty(locale)) {
 
                     try {
-                        
+                        // download
                         await I18n.loadTranslation(locale, (progress) => {
-                            this.codePushDownloadDidProgress(progress);
+                            
+                            this.downloadProgress(progress, I18n.translate('locales.language'));
                         });
-                    } catch (error) {
-                        
-                    }
+                    } catch (error) {}
                 }
             }
-            resolve();
+            setTimeout(() => {
+                
+                resolve();
+            }, 0);
         } );
     };
 }

@@ -13,7 +13,8 @@
 			"description_prefix": "Mô tả: ",
 			"checking_for_update": "Kiểm tra phiên bản",
 			"downloading_prefix": "Đang tải",
-			"downloading": "kiểm tra kết nối",
+			"connecting": "kiểm tra kết nối",
+			"downloading": "đang tải {{package}}",
 			"awaiting_user_action": "Đang chờ xác nhận",
 			"installing_update": "Đang cài đặt",
 			"up_to_date": "Đã cập nhật",
@@ -31,6 +32,7 @@
 			"exit_cancel": "Huỷ"
 		},
 		"locales": {
+			"language": "ngôn ngữ",
 			"vi": "Tiếng việt",
 			"en": "English"
 		}

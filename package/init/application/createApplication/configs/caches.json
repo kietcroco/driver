@@ -1,0 +1,18 @@
+{
+    "images": {
+        "driver": "File",
+        "namespace": "cache-image", // tên thư mục cache
+        "options": {
+            "keepExt": true, // giữ lại đuôi file
+            "hashFileName": true // encode tên file
+        }
+    },
+    "i18n": {
+        "driver": "File",
+        "namespace": "cache-translations", // tên thư mục cache
+        "options": {
+            "keepExt": true, // giữ lại đuôi file
+            "hashFileName": true // encode tên file
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "defaultLocale": "vi",
+    "fallbacks": true,
+    "syncKey": "@i18n:currentLocale",
+    "hardwareChange": true,
+    "hardwareSyncKey": "@i18n:hardwareLocale",
+    "locales": {
+        "vi": "https://raw.githubusercontent.com/ro31337/libretaxi/master/locales/vi.json",
+        "en": "https://raw.githubusercontent.com/ro31337/libretaxi/master/locales/en.json"
+    },
+    "translations": {
+    	
+    },
+    "downloaderConfigs": {
+
+    }
+}
