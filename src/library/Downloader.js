@@ -26,7 +26,6 @@ class Downloader {
             // kiểm tra cache
             try {
                 const hasCache = await this.cache.has(url);
-
                 // nếu có cache thì lấy cache
                 if (hasCache) {
 
@@ -35,7 +34,6 @@ class Downloader {
 
                         return resolve(`${FILE_PREFIX}${hasCache}`);
                     }
-
                     // lấy nội dung
                     const content = await this.cache.get(hasCache);
                     return resolve(content);
@@ -59,28 +57,22 @@ class Downloader {
 
             const progress = (receivedBytes, totalBytes) => {
 
-                if( !options.progress ) {
-                    return;
-                }
                 receivedBytes = receivedBytes || 0;
                 receivedBytes = receivedBytes * 1;
                 totalBytes = totalBytes || 0;
                 totalBytes = totalBytes * 1;
-                options.progress({
+                options.progress && options.progress({
                     receivedBytes,
                     totalBytes
                 });
             };
             const uploadProgress = (writtenBytes, totalBytes) => {
 
-                if( !options.uploadProgress ) {
-                    return;
-                }
                 writtenBytes = writtenBytes || 0;
                 writtenBytes = writtenBytes * 1;
                 totalBytes = totalBytes || 0;
                 totalBytes = totalBytes * 1;
-                options.uploadProgress({
+                options.uploadProgress && options.uploadProgress({
                     writtenBytes,
                     totalBytes
                 });

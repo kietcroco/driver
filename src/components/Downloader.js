@@ -26,7 +26,7 @@ class Downloader extends React.PureComponent {
         indeterminate: true
     };
 
-    componentWillMount() {
+    componentDidMount() {
 
         this.props.onShow && this.props.onShow();
     }

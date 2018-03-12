@@ -6,8 +6,11 @@
         "latitudeDelta": 15.277993753164909,
         "longitudeDelta": 9.950986728072195
     },
+    "LATITUDE_DELTA": 0.0922,
+    "LONGITUDE_DELTA": 0.0421,
     // place api key
-    "google_api_key": "AIzaSyC-i8cGSfbOy_Y0B9VB9_UwXRkOjABQP9I",
+    "google_api_key": "AIzaSyBtvPriRmsBry0aKK_PGuHPnxxWVQs5lbg",
+    "types": ["geocode", "establishment"],
     // giới hạn lưu lịch sử search khu vực
     "history_search_limit": 20
 }

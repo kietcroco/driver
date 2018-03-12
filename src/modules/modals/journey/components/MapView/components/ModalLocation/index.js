@@ -1,35 +1,31 @@
 "use strict";
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Modal } from 'react-native';
+import { View, Text, Modal, ScrollView } from 'react-native';
 import SearchBar from '../SearchBar';
-import { scale, colors, fontSizes, hitSlop, shadow, sizes } from '~/configs/styles';
-import SectionBox from '~/components/SectionBox';
-import MtIcon from 'react-native-vector-icons/MaterialIcons';
-import LocationItem from './LocationItem';
-import GooglePlaceService from '~/library/GooglePlaceService';
+import { colors } from '~/configs/styles';
+//import SectionBox from '~/components/SectionBox';
 import SearchHistory from './SearchHistory';
-import { history_search_limit } from '~/configs/map';
+import SearchResult from './SearchResult';
+import I18n from '~/library/i18n/I18n';
 import { createClient } from '~/library/googlemaps';
+import { google_api_key, types as placeTypes } from '~/configs/map';
+import Permissions from 'react-native-permissions';
+import SelectOnMap from './SelectOnMap';
 
-const Geo = new GooglePlaceService({
-    key: "AIzaSyC-i8cGSfbOy_Y0B9VB9_UwXRkOjABQP9I"
-});
-const a = createClient({
-    key: "AIzaSyC-i8cGSfbOy_Y0B9VB9_UwXRkOjABQP9I"
-});
-// var b = a.placesAutoComplete({
-//     input: "Hồ chí minh"
-// }, (...c) => console.log(c));
-// console.log(b)
 class ModalLocation extends React.Component {
 
     static displayName = "@ModalLocation";
 
     static propTypes = {
+        visible: PropTypes.bool,
+        googleMapsClient: PropTypes.object,
+        currentPosition: PropTypes.object,
+        onSelect: PropTypes.func
     };
 
     static defaultProps = {
+        visible: false
     };
 
     constructor(props) {
@@ -37,53 +33,107 @@ class ModalLocation extends React.Component {
 
         this.state = {
             searchText: "",
-            searchHistory: []
+            currentPosition: undefined,
+            modalSelectVisible: false
         };
+
+        this.googleMapsClient = props.googleMapsClient || createClient({
+            key: google_api_key,
+            language: I18n.locale
+        });
     }
 
     componentWillReceiveProps(nextProps) {
 
+        if( this.props.searchText !== nextProps.searchText && nextProps.searchText !== this.state.searchText ) {
+
+            this.setState({
+                searchText: nextProps.searchText
+            });
+        }
+
+        if( 
+            !this._watchID
+            && typeof nextProps.currentPosition === "object"
+            && this.props.currentPosition !== nextProps.currentPosition 
+            && nextProps.currentPosition != this.state.currentPosition 
+        ) {
+
+            this.setState({
+                currentPosition: nextProps.currentPosition
+            });
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
 
-        return true;
+        return (
+            this.state.searchText !== nextState.searchText
+            || this.state.currentPosition !== nextState.currentPosition
+            || this.props.visible !== nextProps.visible
+            || this.props.currentPosition !== nextProps.currentPosition
+        );
     }
 
     render() {
 
+        const {
+            visible,
+            onRequestClose
+        } = this.props;
+
         return (
             <Modal
-                visible={true}
-                onRequestClose={() => { }}
-                transparent={false}
+                visible        = {visible}
+                onRequestClose = {onRequestClose}
+                transparent    = {true}
             >
-                <View style={{
-                    flex: 1,
-                    backgroundColor: colors.mapModalBackgroundColor,
-                }}>
+                <View style={_styles.container}>
                     <SearchBar
-                        ref={ref => (this.searchBar = ref)}
-                        editable={true}
-                        directionButton={false}
-                        backButton={true}
-                        onChangeText={searchText => {
-                            this.setState({
-                                searchText
-                            });
-                        }}
-                        clearOnPress={() => {
-                            this.setState({
-                                searchText: ""
-                            });
-                        }}
-                        backOnPress={() => {
-
-                        }}
+                        // ref                 = {ref => (this.searchBar = ref)}
+                        editable            = {true}
+                        directionButton     = {false}
+                        backButton          = {true}
+                        onChangeText        = {this._searchOnChangeText}
+                        clearOnPress        = {this._searchClearOnPress}
+                        backOnPress         = {onRequestClose}
+                        onRef               = { ref => (this.searchBar = ref) }
                     >
                         {this.state.searchText}
                     </SearchBar>
-                    <SearchHistory />
+                    <ScrollView
+                        style                          = { _styles.scrollView }
+                        renderRow                      = {this._renderRow}
+                        horizontal                     = {false}
+                        onEndReachedThreshold          = {50}
+                        keyboardDismissMode            = "on-drag"
+                        keyboardShouldPersistTaps      = "handled"
+                        showsHorizontalScrollIndicator = {false}
+                        showsVerticalScrollIndicator   = {true}
+                        directionalLockEnabled         = {true}
+                    >
+                        <SearchResult
+                            input            = {this.state.searchText}
+                            hasHistory       = { this._hasHistory }
+                            onSelect         = { this._onSelect }
+                            visible          = { !!this.state.searchText }
+                            googleMapsClient = {this.googleMapsClient}
+                            currentPosition  = { this.state.currentPosition }
+                        />
+
+                        <SearchHistory
+                            ref              = {ref => this.searchHistory = ref}
+                            onSelect         = { this._onSelect }
+                            visible          = { !this.state.searchText }
+                            googleMapsClient = {this.googleMapsClient}
+                            currentPosition  = {this.state.currentPosition}
+                        />
+
+                        <SelectOnMap
+                            currentPosition = {this.state.currentPosition}
+                            visible         = {!!this.state.searchText}
+                        />
+                    </ScrollView>
                 </View>
             </Modal>
         );
@@ -91,91 +141,132 @@ class ModalLocation extends React.Component {
 
     componentDidMount() {
 
-        this._syncHistoryCache();
-        Geo.getSuggestions("107 bến vân đồn").then( v => {
-            console.log('getSuggestions',v);
-            this._syncHistoryCache(v[0]);
-        } ).catch(e => console.log(e));
+        if( !this.props.currentPosition ) {
 
+            this._watchPosition();
+        } 
+        
+        if( this.props.visible ) {
 
-        var googleMapsClient = createClient({
-            key: "AIzaSyC-i8cGSfbOy_Y0B9VB9_UwXRkOjABQP9I"
-        });
-
-        googleMapsClient.geocode({
-            address: '1600 Amphitheatre Parkway, Mountain View, CA'
-        }, function (err, response) {
-            if (!err) {
-                console.log(response.json.results);
-            }
-        });
+            this.searchBar && this.searchBar.focus();
+        }
     }
 
-    // hàm đồng bộ lịch sử tìm kiếm với cache
-    _syncHistoryCache = async ( geoResult ) => {
+    componentDidUpdate( prevProps ) {
 
-        // cache adapter
-        const HistoryCache = CacheManager.resolve('location-history');
+        if (prevProps.visible !== this.props.visible && this.props.visible) {
+
+            this.searchBar && this.searchBar.focus();
+        }
+    }
+
+    componentWillUnmount() {
+
+        if (this._watchID) {
+
+            navigator.geolocation.clearWatch(this._watchID);
+        }
+    }
+
+    // hàm lấy vị trí hiện tại
+    _watchPosition = async () => {
+
         try {
-
-            // lịch sử search
-            var searchHistory = this.state.searchHistory && this.state.searchHistory.slice() || [];
-            let cacheKey = "search-history";
-
-            // nếu không có truyền geo mới thì lấy từ cache lên
-            if (!geoResult) {
-
-                // nếu có cache
-                let hasCache = await HistoryCache.has(cacheKey);
-                if (hasCache) {
-                    
-                    // lấy cache lên
-                    let cacheHistory = await HistoryCache.get(cacheKey);
-                    searchHistory = cacheHistory || searchHistory;
-                    // sắp xếp lại lịch sử theo thời gian gần nhất
-                    searchHistory.sort( (prev, next) => {
-
-                        return next.searched_time - prev.searched_time;
-                    } );
-                }
-            } 
             
-            // nếu có geo mới thì lưu cache lại
-            else if (typeof geoResult === "object" && geoResult.place_id) {
+            // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+            let statuses = await Permissions.check('location');
 
-                // format lại geo Result (loại bỏ các prop không cần thiết)
-                geoResult = {
-                    searched_time: (new Date).getTime(), // thời gian tìm kiếm
-                    place_id: geoResult.place_id, // place id
-                    description: geoResult.description, // địa chỉ
-                    structured_formatting: {
-                        main_text: geoResult.structured_formatting && geoResult.structured_formatting.main_text,
-                        secondary_text: geoResult.structured_formatting && geoResult.structured_formatting.secondary_text
+            if (statuses == "undetermined") {
+
+                // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+                statuses = await Permissions.request('location');
+            }
+
+            if (statuses == "authorized") {
+                
+                this._watchID = navigator.geolocation.watchPosition(
+                    position => {
+
+                        if(
+                            position &&
+                            position.coords
+                        ) {
+
+                            this.setState({
+                                currentPosition: position.coords
+                            });
+                        }
+                    },
+                    error => {},
+                    {
+                        timeout: 30000, 
+                        maximumAge: 200, 
+                        enableHighAccuracy: true, 
+                        distanceFilter: 100, 
+                        // useSignificantChanges: true
                     }
-                };
-
-                // loại bỏ place id trùng
-                searchHistory = searchHistory.filter(geo => (geo.place_id !== geoResult.place_id) );
-
-                // thêm vào đầu mảng lịch sử
-                searchHistory.unshift(geoResult);
-
-                // giới hạn 20 tin
-                searchHistory = searchHistory.slice(0, history_search_limit);
-                await HistoryCache.put(cacheKey, searchHistory);
+                );
             }
+        } catch (error) {}
+    };
 
-            if (!this.state.searchHistory || this.state.searchHistory.length !== searchHistory.length) {
+    // sự kiện nhập input search
+    _searchOnChangeText = searchText => {
 
-                this.setState({
-                    searchHistory
-                });
+        this.setState({
+            searchText
+        }, () => {
+
+            this.props.onChangeText && this.props.onChangeText(searchText);
+        });
+    };
+
+    // sự kiện nhấn nút xoá search
+    _searchClearOnPress = () => {
+
+        this.setState({
+            searchText: ""
+        });
+    };
+
+    // hàm kiểm tra place id có trong history không
+    _hasHistory = (place_id) => {
+
+        let result = this.searchHistory && this.searchHistory.getSource(place_id);
+
+        if( result ) {
+
+            if( Array.isArray(result) ) {
+
+                return !!result.length;
             }
-        } catch (e) {}
+            return true;
+        }
+
+        return result;
+    };
+
+    // sự kiện chọn location
+    _onSelect = (geoResult) => {
+
+        // lưu cache
+        if(this.searchHistory) {
+
+            this.searchHistory.syncHistoryCache(geoResult);
+        }
+
+        this.props.onSelect && this.props.onSelect(geoResult);
     };
 }
 
 const _styles = {
+    container: {
+        flex: 1,
+        backgroundColor: colors.mapModalBackgroundColor
+    },
+    scrollView: {
+        flex: 1
+    }
 };
 
 export default ModalLocation;

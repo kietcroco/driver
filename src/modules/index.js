@@ -48,7 +48,7 @@ class Navigator extends React.Component {
 ReducerRegistry.register( reducerKey, ( state, action ) => {
 	
 	return Navigation.router.getStateForAction(action, state) || state;
-}, true);
+}, false);
 
 // map state
 export default connect( state => ({

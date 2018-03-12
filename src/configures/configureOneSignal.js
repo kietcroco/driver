@@ -1,19 +1,22 @@
 import WaitingEvent from '~/library/WaitingEvent';
 import OneSignal from 'react-native-onesignal';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import { ONESIGNAL_PLAYER_ID, AUTHORIZATION, NOTIFICATION_TOKEN, UNREAD_NOTIFICATION_NUMBER } from '~/constants/registryKey';
 import trackerService from '~/services/notification/tracker';
 import subscriberService from '~/services/notification/subscriber';
 
 export default (Registry) => {
 
-    // chuông (Android only)
-    OneSignal.enableSound(true);
+    if( Platform.OS === "android" ) {
 
-    // rung (Android only)
-    OneSignal.enableVibrate(true);
+        // chuông (Android only)
+        OneSignal.enableSound(true);
 
-    // khi app đang mở (Android only): 0: none, 1: inapp alert, 2: notification
+        // rung (Android only)
+        OneSignal.enableVibrate(true);
+    }
+    
+    // khi app đang mở: 0: none, 1: inapp alert, 2: notification
     OneSignal.inFocusDisplaying(0);
 
     // cho phép nhận

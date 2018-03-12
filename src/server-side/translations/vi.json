@@ -45,7 +45,12 @@
     },
     "maps": {
         "search_placeholder": "Tìm vị trí",
-        "search_history": "Lịch sử tìm kiếm"
+        "search_history": "Lịch sử tìm kiếm",
+        "clear_search_history": "Xóa tất cả",
+        "clear_search_history_failed": "Xóa lịch sử không thành công",
+        "select_location_on_map": "Chọn vị trí trên bản đồ",
+        "select_location_on_map_description": "Xoay và thu phóng để điều chỉnh",
+        "select_location_on_map_submit": "OK"
     },
     "fleets": {
         "state": {

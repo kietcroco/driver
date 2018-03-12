@@ -9,6 +9,15 @@ class LocationView extends React.PureComponent {
     static displayName = "@LocationView";
 
     static propTypes = {
+        source: PropTypes.shape({
+            description: PropTypes.string,
+            place_id: PropTypes.string,
+            structured_formatting: PropTypes.shape({
+                main_text: PropTypes.string,
+                secondary_text: PropTypes.string
+            }),
+            types: PropTypes.array
+        })
     };
 
     static defaultProps = {
@@ -16,10 +25,21 @@ class LocationView extends React.PureComponent {
 
     render() {
 
+        const {
+            source = {}
+        } = this.props;
+
+        const {
+            structured_formatting: {
+                main_text,
+                secondary_text
+            } = {}
+        } = source;
+
         return (
             <View style={_styles.container}>
-                <Text numberOfLines={1} style={_styles.street}>122 Bến vân đồn</Text>
-                <Text numberOfLines={1} style={_styles.address}>phường 9, quận 4, TP.HCM</Text>
+                <Text numberOfLines={1} style={_styles.street}>{main_text}</Text>
+                <Text numberOfLines={1} style={_styles.address}>{secondary_text}</Text>
             </View>
         );
     }
@@ -28,6 +48,7 @@ class LocationView extends React.PureComponent {
 const _styles = {
     container: {
         flex: 1,
+        justifyContent: "center",
         borderBottomColor: colors.separatorBackgroundColor,
         borderBottomWidth: sizes.separatorHeight
     },

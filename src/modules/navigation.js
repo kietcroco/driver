@@ -24,12 +24,12 @@ const navigatorConfiguration = {
 	//initialRouteName: namespace + '/',
 
 	/** Member */
-	initialRouteName: '/member/login',
+	// initialRouteName: '/member/login',
 	// initialRouteName: '/member/comfirm-code',
 	// initialRouteName: '/member/register',
 
 	/** Hành trình */
-	// initialRouteName: '/journey/report',
+	initialRouteName: '/journey/report',
 
 	initialRouteParams: {
 

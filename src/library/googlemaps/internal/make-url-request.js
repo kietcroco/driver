@@ -153,5 +153,5 @@ module.exports = function makeUrlRequest(url, onSuccess, onError, options) {
   });
   request.catch(e => onError(e));
 
-  return function cancel() { request.abort(); };
+  return function cancel(message) { request.abort(message); };
 };

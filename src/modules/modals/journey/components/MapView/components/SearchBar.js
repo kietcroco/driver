@@ -19,7 +19,8 @@ class SearchBar extends React.PureComponent {
         onPress: PropTypes.func, // sự kiện click vào text
         backOnPress: PropTypes.func, // sự kiện click nút back
         backButton: PropTypes.bool, // có hiển thị nút back không
-        clearOnPress: PropTypes.func // sự kiện click nút xoá
+        clearOnPress: PropTypes.func, // sự kiện click nút xoá
+        onRef: PropTypes.func
     };
 
     static defaultProps = {
@@ -43,6 +44,7 @@ class SearchBar extends React.PureComponent {
             backOnPress,
             editable,
             clearOnPress,
+            onRef,
             ...otherProps
         } = this.props;
 
@@ -51,27 +53,28 @@ class SearchBar extends React.PureComponent {
                 <TouchableOpacity onPress={backButton ? backOnPress : menuOnPress} activeOpacity={colors.activeOpacity} style={_styles.button}>
                     <MtIcon name={backButton ? 'arrow-back' : 'menu'} style={_styles.iconMenu} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={editable ? undefined : onPress} style={_styles.textContainer} activeOpacity={1}>
-                    <TextInput
-                        {...otherProps}
-                        placeholder           = {placeholder}
-                        selectTextOnFocus     = {true}
-                        editable              = {editable}
-                        underlineColorAndroid = {colors.underlineColorAndroid}
-                        placeholderTextColor  = {colors.placeholderTextColor}
-                        selectionColor        = {colors.inputSelectionColor}
-                        returnKeyType         = "search"
-                        value                 = {`${children}`}
-                        style                 = {_styles.input}
-                        numberOfLines         = {1}
-                        blurOnSubmit          = {true}
-                        ref                   = {ref => (this.input = ref)}
-                    />
+                <TouchableOpacity onPress={(editable ? undefined : onPress)} style={_styles.textContainer} activeOpacity={1}>
                     {
-                        /**
-                         
-                         <Text numberOfLines={2} style={`${children}` ? _styles.text : _styles.placeholder}>{children || placeholder}</Text>
-                         */
+                        !editable ?
+                            <Text numberOfLines={1} style={`${children}` ? _styles.text : _styles.placeholder}>{children || placeholder}</Text>
+                        : <TextInput
+                            {...otherProps}
+                            placeholder           = {placeholder}
+                            selectTextOnFocus     = {true}
+                            editable              = {editable}
+                            underlineColorAndroid = {colors.underlineColorAndroid}
+                            placeholderTextColor  = {colors.placeholderTextColor}
+                            selectionColor        = {colors.inputSelectionColor}
+                            returnKeyType         = "search"
+                            value                 = {`${children}`}
+                            style                 = {_styles.input}
+                            numberOfLines         = {1}
+                            blurOnSubmit          = {true}
+                            ref                   = {ref => {
+                                this.input = ref;
+                                onRef && onRef(ref);
+                            }}
+                        />
                     }
                 </TouchableOpacity>
                 <TouchableOpacity onPress={`${children}` ? clearOnPress : undefined} activeOpacity={`${children}` ? colors.activeOpacity : 1} style={_styles.button}>
@@ -79,7 +82,7 @@ class SearchBar extends React.PureComponent {
                 </TouchableOpacity>
                 {
                     directionButton &&
-                    <View style={_styles.separate} />
+                        <View style={_styles.separate} />
                 }
                 {
                     directionButton &&

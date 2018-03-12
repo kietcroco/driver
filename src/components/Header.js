@@ -62,7 +62,7 @@ class Header extends React.PureComponent {
 			return (
 				<TouchableOpacity onPress={() => {
 
-					navigation.goBack();
+					navigation.goBack(scene.route.key);
 				}} style={_styles.btnBack}>
 
 					<FAIcon style={_styles.iconBack} name="chevron-left" />
@@ -123,7 +123,9 @@ class Header extends React.PureComponent {
 
 		return (
 			<View style={_styles.container}>
+				
 				<StatusBar backgroundColor={colors.headerBackgroundColor} hidden={Platform.OS === "ios"} />
+				
 				<View style={_styles.headerLeft}>
 					{this._renderHeaderLeft(options)}
 				</View>

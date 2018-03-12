@@ -10,7 +10,7 @@ class Icon extends React.PureComponent {
     static displayName = "@Icon";
 
     static propTypes = {
-        iconName: PropTypes.oneOf([
+        name: PropTypes.oneOf([
             "history",
             "place"
         ]),
@@ -18,14 +18,14 @@ class Icon extends React.PureComponent {
     };
 
     static defaultProps = {
-        iconName: "place"
+        name: "place"
     };
 
     render() {
 
         return (
             <View style={_styles.container}>
-                <MtIcon style={_styles.icon} name={this.props.iconName} />
+                <MtIcon style={_styles.icon} name={this.props.name} />
                 {
                     !!this.props.distance && 
                         <Text style={_styles.distance}>{this.props.distance}</Text>
