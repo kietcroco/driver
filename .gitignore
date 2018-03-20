@@ -2,10 +2,10 @@
 #
 .DS_Store
 package-lock.json
-
 # Xcode
 #
 build/
+ios/Index/
 *.pbxuser
 !default.pbxuser
 *.mode1v3

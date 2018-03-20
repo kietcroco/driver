@@ -223,6 +223,8 @@ class ModalInput extends React.Component {
                 {
                     !!children && typeof children === "string" ?
                         <Text style={{
+                            position: 'absolute',
+                            bottom: 5,
                             color: color ? color : _colors.normalColor
                         }}>{children}</Text> :
                         children || null
@@ -255,8 +257,8 @@ const _styles = {
     },
     container: {
         flex: 1,
-        borderWidth: sizes.borderWidth,
-        borderColor: _colors.primaryBorderColor,
+        // borderWidth: sizes.borderWidth,
+        // borderColor: _colors.primaryBorderColor,
         paddingHorizontal: 8 * scale,
         position: "relative",
         justifyContent: "center"
@@ -299,7 +301,7 @@ const _styles = {
         flexDirection: "row"
     },
     input: {
-        color: _colors.normalColor,
+        // color: _colors.normalColor,
         padding: 0,
         fontSize: fontSizes.normal,
         height: inputHeight,

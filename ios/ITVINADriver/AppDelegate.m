@@ -12,6 +12,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+
 #import <Firebase.h>
 @import GoogleMaps;
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -30,7 +31,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  // firebase
+
+    // firebase
   [FIRApp configure];
 
   // google map
@@ -46,12 +48,12 @@
 
   NSURL *jsCodeLocation;
 
-  // code push
-  #ifdef DEBUG
-      jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  #else
-      jsCodeLocation = [CodePush bundleURL];
-  #endif
+  
+    #ifdef DEBUG
+        jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+    #else
+        jsCodeLocation = [CodePush bundleURL];
+    #endif
 
   /**
    * @todo fix bug RCTBridge required dispatch_sync to load RCTDevLoadingView
@@ -82,7 +84,6 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-
 
   /**
    * @todo: exception handler
@@ -123,9 +124,9 @@
   /**
    * @end: exception handler
   */
-
   return YES;
 }
+
 
 /**
  * @todo: facebook sdk + google signin

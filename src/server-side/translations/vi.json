@@ -4,6 +4,21 @@
         "error": "Lỗi hệ thống",
         "success": "Thành công"
     },
+    "image_picker": {
+        "title": "Chọn ảnh đại diện",
+        "cancel": "Hủy",
+        "take": "Chụp ảnh",
+        "library": "Thư viện",
+        "deny": {
+            "title": "Không có quyền truy cập",
+            "text": "Bạn vui lòng cấp quyền để có thể truy cập máy ảnh và thư viện",
+            "retry": "Thử lại"
+        },
+        "error": {
+            "title": "Lỗi",
+            "text": "Chọn hình ảnh không thành công"
+        }
+    },
     "member": {
         "login": {
             "phone_placeholder": "Vui lòng nhập số điện thoại",
@@ -50,7 +65,8 @@
         "clear_search_history_failed": "Xóa lịch sử không thành công",
         "select_location_on_map": "Chọn vị trí trên bản đồ",
         "select_location_on_map_description": "Xoay và thu phóng để điều chỉnh",
-        "select_location_on_map_submit": "OK"
+        "select_location_on_map_submit": "OK",
+        "current_location": "Vị trí hiện tại"
     },
     "fleets": {
         "state": {
@@ -65,7 +81,14 @@
             "model": "Model",
             "weight": "Tải trọng"
         },
-        "create": "Tạo mới"
+        "create": {
+            "title": "Tạo mới phương tiện",
+            "create": "Tạo mới"
+        },
+        "announce": {
+            "fleet_type": "Vui lòng chọn loại xe!",
+            "fleets_license_code": "Vui lòng nhập bảng số xe!"
+        }
     },
     "feets_detail": {
         "delete_feet": "Xóa phương tiện",
@@ -80,5 +103,11 @@
         "language": "Ngôn ngữ",
         "gps": "GPS",
         "notification": "Thông báo"
+    },
+    "tabNavigator": {
+        "Home" : "Trang chủ",
+        "Setting": "Cài đặt",
+        "Notification": "Thông báo",
+        "Profile": "Profile"
     }
 }

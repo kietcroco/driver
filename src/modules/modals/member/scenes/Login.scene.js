@@ -10,7 +10,7 @@ import loginService from '~/services/member/login';
 import DeviceInfo from 'react-native-device-info';
 import { NavigationActions } from 'react-navigation';
 import { AsyncStorage } from 'react-native';
-import { AUTHORIZATION } from '~/constants/registryKey';
+import { AUTHORIZATION, AUTH_IDENTITY } from '~/constants/registryKey';
 
 class Login extends React.Component {
 
@@ -34,7 +34,7 @@ class Login extends React.Component {
         } = props;
 
         this.state = {
-            account_mobile,
+            account_mobile: "0969894006", // account_mobile,
             loading: false,
             hideForm: true
         };
@@ -87,8 +87,23 @@ class Login extends React.Component {
     componentDidMount() {
         
         (async () => {
+
+            const {
+                navigation: {
+                    state: {
+                        params: {
+                            account_mobile: account_mobileParam
+                        } = {}
+                    }
+                }
+            } = this.props;
             
-            let account_mobile = await this._syncMobilePhone();
+            let account_mobile = account_mobileParam || this.state.account_mobile;
+
+            if (!account_mobile ) {
+
+                account_mobile = await this._syncMobilePhone();
+            }
             account_mobile = `${account_mobile}`;
 
             this.setState({
@@ -157,8 +172,8 @@ class Login extends React.Component {
                 loading: false
             });
             
+            // lưu cache
             this._syncMobilePhone( this.state.account_mobile );
-
 
             if (res.status >= 200 && res.status < 300 && res.data) {
                 // this.props.navigation.setParams({account: res.data["data"]});
@@ -181,7 +196,9 @@ class Login extends React.Component {
                         this.props.navigation.dispatch(NavigationActions.reset({
                             index: 0,
                             actions: [
-                                NavigationActions.navigate({ routeName: '/' })
+                                NavigationActions.navigate({ routeName: '/', params: {
+                                    title: Registry.get(AUTH_IDENTITY) ? Registry.get(AUTH_IDENTITY).account_fullname : 'Home'
+                                } })
                             ]
                         }));
                         toast(translate("member.login.login_success"));

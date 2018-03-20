@@ -29,6 +29,7 @@ import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.appevents.AppEventsLogger;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.marianhello.react.BackgroundGeolocationPackage;
+import com.wix.interactable.Interactable;
 
 import com.airbnb.android.react.maps.MapsPackage;
 import io.invertase.firebase.RNFirebasePackage;
@@ -69,6 +70,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new Interactable(),
             new RNGoogleSigninPackage(),
             new FBSDKPackage(mCallbackManager),
             new ReactNativeExceptionHandlerPackage(),

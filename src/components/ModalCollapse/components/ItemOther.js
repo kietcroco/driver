@@ -40,7 +40,7 @@ class ItemOther extends React.Component {
 		geolocation: false,
 		geoCode: null,
 		keyword: "",
-		placeholder: translate("Nhập tỉnh khác"),
+		placeholder: "Nhập tỉnh khác",
 		keepInput: false
 	};
 

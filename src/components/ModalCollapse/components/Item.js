@@ -39,7 +39,7 @@ class Item extends React.Component {
 
 	render() {
 
-		const { 
+		const {
 			onPress,
 			label,
 			multiple,
@@ -51,15 +51,16 @@ class Item extends React.Component {
 
 		return (
 
-			<TouchableOpacity activeOpacity={ colors.activeOpacity } onPress={ onPress } style={ [_styles.container, {
+			<TouchableOpacity activeOpacity={colors.activeOpacity} onPress={onPress} style={[_styles.container, {
 				paddingLeft
-			}] }>
-				<Text numberOfLines={1} style={ _styles.label }>{ label }</Text>
+			}]}>
 				{
-					multiple ? 
-						<Checkbox checked={ checked }/> : 
-						<Radio checked={ checked } />
+					multiple ?
+						<Checkbox checked={checked} /> :
+						<Radio checked={checked} />
 				}
+				<Text numberOfLines={1} style={_styles.label}>{label}</Text>
+
 			</TouchableOpacity>
 		);
 	}
@@ -69,7 +70,7 @@ const _styles = {
 	container: {
 		height: sizes.rowItemHeight,
 		alignItems: "center",
-		justifyContent: "space-between",
+		// justifyContent: "space-between",
 		borderBottomColor: colors.primaryBorderColor,
 		borderBottomWidth: sizes.borderWidth,
 		paddingRight: sizes.margin,
@@ -77,7 +78,8 @@ const _styles = {
 	},
 	label: {
 		color: colors.normalColor,
-		fontSize: fontSizes.normal
+		fontSize: fontSizes.normal,
+		paddingLeft: sizes.spacing
 	}
 };
 

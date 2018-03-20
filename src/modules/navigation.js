@@ -22,7 +22,7 @@ const routeConfiguration = {
 // config router
 const navigatorConfiguration = {
 	//initialRouteName: namespace + '/',
-
+	// initialRouteName: '/fleet/fleet-create',
 	/** Member */
 	// initialRouteName: '/member/login',
 	// initialRouteName: '/member/comfirm-code',

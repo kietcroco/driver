@@ -84,7 +84,7 @@ class FleetItem extends Component {
             <Wraper
                 onPress={() => onPress(source)}
                 style={[_style.container, showBorder && {
-                    paddingBottom: 5,
+                    paddingBottom: sizes.padding,
                     borderBottomWidth: 1,
                     borderBottomColor: '#ddd'
                 }]} >
@@ -144,7 +144,7 @@ const _style = {
     container: {
         flex: 1,
         flexDirection: 'row',
-        marginVertical: sizes.margin,
+        marginVertical: sizes.spacing,
         paddingHorizontal: sizes.large
     },
     avatar: {

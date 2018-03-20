@@ -377,6 +377,7 @@ class SlideTransitioner extends React.Component {
 
 			const screenNavigation = addNavigationHelpers({
 				...navigation,
+				scene,
 				state: scene.route,
 				addListener: getChildEventSubscriber(
 					navigation.addListener || function(){},

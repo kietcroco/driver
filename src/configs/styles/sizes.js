@@ -6,7 +6,9 @@ export default {
     spacing             : 5 * scale, // khoảng cách
     large               : 15 * scale,
     huge                : 20 * scale,
-    
+    rowItemHeight       : 36 * scale,
+    // border
+    borderWidth         : 1 * scale,
     // button
     buttonHeight        : 30 * scale,  // chiều cao của button
     buttonBorderRadius  : 30 * scale, // border radius cho button

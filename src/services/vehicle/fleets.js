@@ -32,10 +32,31 @@ export const get = (params = {}) => {
     deferred.abort = (message: String) => source.cancel(message);
 
     deferred.isCancel = thrown => axios.isCancel(thrown);
-   
+
     return deferred;
 };
 
+export const post = (data = {}) => {
+    const source = axios.CancelToken.source();
+    const deferred = axios({
+        url,
+        baseURL: apiDomain,
+        method: "POST",
+        cancelToken: source.token,
+        headers: {
+            Accept: "application/json"
+        },
+        data: {
+            ...data
+        }
+    });
+
+    deferred.abort = (message: String) => source.cancel(message);
+
+    deferred.isCancel = thrown => axios.isCancel(thrown);
+
+    return deferred;
+};
 export default {
     validate,
     get

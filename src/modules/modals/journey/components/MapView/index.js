@@ -1,53 +1,85 @@
 "use strict";
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
-import MtIcon from 'react-native-vector-icons/MaterialIcons';
+import { View } from 'react-native';
 import MapViewBase from 'react-native-maps';
-import { initialRegion } from '~/configs/map';
 import extendExports from '~/library/extendExports';
 import OmniBox from './components/OmniBox';
-import I18n from '~/library/i18n/I18n';
-import { createClient } from '~/library/googlemaps';
-import { google_api_key, types as placeTypes, LATITUDE_DELTA, LONGITUDE_DELTA } from '~/configs/map';
-import Permissions from 'react-native-permissions';
+import { LATITUDE_DELTA, LONGITUDE_DELTA, initialCoordinate, initialRegion } from '~/configs/map';
+import shallowEqual from 'fbjs/lib/shallowEqual';
+import CurrentLocationButton from './components/CurrentLocationButton';
 
 class MapView extends React.Component {
 
     static displayName = "@MapView";
 
     static propTypes = {
+        currentPosition: PropTypes.object,
+        onRef: PropTypes.func,
+        region: PropTypes.object,
+        searchBar: PropTypes.bool
     };
 
     static defaultProps = {
+        showsUserLocation: true,
+        followsUserLocation: true,
+        showsMyLocationButton: true,
+        cacheEnabled: false,
+        loadingEnabled: false,
+        initialRegion: initialRegion,
+        searchBar: true
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            region: initialRegion,
-            marker: [],
+            currentPosition: props.currentPosition || initialCoordinate,
             selectMarker: []
         };
 
-        this.googleMapsClient = props.googleMapsClient || createClient({
-            key: google_api_key,
-            language: I18n.locale
-        });
+        this.googleMapsClient = props.googleMapsClient || require("./utils/createGoogleMapsClient").default();
 
         this._watchID = undefined;
         this._isManipulating = false;
-        this._currentCoord = initialRegion;
+        this._currentRegion = props.region || initialRegion;
+        this._isReady = false;
     }
 
     componentWillReceiveProps(nextProps) {
 
+        if( 
+            nextProps.currentPosition 
+            && this.props.currentPosition !== nextProps.currentPosition 
+            && nextProps.currentPosition !== this.state.currentPosition
+        ) {
+
+            this.setState({
+                currentPosition: nextProps.currentPosition
+            });
+        } else if( 
+            this.props.currentPosition 
+            && !nextProps.currentPosition 
+            && (nextProps.showsUserLocation || nextProps.followsUserLocation)
+        ) {
+
+            this.setState({
+                currentPosition: this.state.currentPosition || initialCoordinate
+            });
+            if (!this._watchID) {
+
+                this._watchPosition();
+            }
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
 
-        return true;
+        return (
+            this.state.selectMarker !== nextState.selectMarker
+            || this.state.currentPosition !== nextState.currentPosition
+            || !shallowEqual(this.props, nextProps)
+        );
     }
 
     render() {
@@ -55,30 +87,43 @@ class MapView extends React.Component {
         const {
             style,
             children,
+            onRef,
+            showsMyLocationButton,
+            region,
+            searchBar,
             ...otherProps
         } = this.props;
 
+        let searchText = "";
+        if (this.state.selectMarker[0]) {
+
+            searchText = this.state.selectMarker[0].description || `${this.state.selectMarker[0].latitude}, ${this.state.selectMarker[0].longitude}`;
+        }
+
         return (
             <View style={_styles.container}>
-                <OmniBox
-                    onLocationSelect = { this._onLocationSelect }
-                    onClear = { this._onClear }
-                ></OmniBox>
+                {
+                    searchBar &&
+                        <OmniBox
+                            onLocationSelect    = { this._onLocationSelect }
+                            onLocationMapSelect = {this._onLocationMapSelect }
+                            onClear             = { this._onClear }
+                            coordinate          = {this.state.selectMarker[0]}
+                            currentPosition     = {this.state.currentPosition}
+                        >{searchText}</OmniBox>
+                }
                 <MapViewBase
+                    provider              = {MapViewBase.PROVIDER_GOOGLE}
                     {...otherProps}
-                    provider={MapViewBase.PROVIDER_GOOGLE}
-                    style={_styles.mapView}
-                    initialRegion={initialRegion}
-                    region={this.state.region}
-                    onLongPress={this._onLongPress}
-                    onPress = {this._onPress}
-                    
-                    showsUserLocation = {true}
-                    followsUserLocation = {true}
-                    showsMyLocationButton = {true}
-        
-                    cacheEnabled = {true}
-                    loadingEnabled={true}
+                    style                 = {_styles.mapView}
+                    onLongPress           = {this._onLongPress}
+                    onPoiClick            = {this._onPoiClick}
+                    showsMyLocationButton = {false}
+                    onMapReady            = {this._onMapReady }
+                    ref                   = { ref => {
+                        onRef && onRef(ref);
+                        this.map = ref;
+                    } }
                 >
                     {children}
                     {
@@ -98,116 +143,274 @@ class MapView extends React.Component {
                             } )
                     }
                 </MapViewBase>
+
+                {
+                    showsMyLocationButton && 
+                        <CurrentLocationButton 
+                            currentPosition   = { this.state.currentPosition }
+                            onCurrentPosition = { this._onCurrentPosition }
+                        />
+                }
             </View>
         );
     }
 
     componentDidMount() {
 
-        this._watchPosition();
+        if (this.props.showsUserLocation || this.props.followsUserLocation) {
+
+            if ( !this.props.currentPosition ) {
+
+                this._watchPosition();
+            }
+        }
     }
+
+    componentWillUnmount() {
+
+        if( this._watchID ) {
+
+            navigator.geolocation.clearWatch(this._watchID);
+            this._watchID = undefined;
+        }
+    }
+
+    _onMapReady = (e) => {
+
+        this._isReady = true;
+        if (this.props.showsUserLocation || this.props.followsUserLocation) {
+
+            this._setRegion({
+                ...this.state.currentPosition,
+                latitudeDelta: LATITUDE_DELTA * 1,
+                longitudeDelta: LONGITUDE_DELTA * 1
+            });
+        } else {
+
+            this._setRegion(this._currentRegion);
+        }
+        this.props.onMapReady && this.props.onMapReady(e);
+    };
+
+    // hàm set lại khu vực
+    _setRegion = (region = {}) => {
+
+        region = {
+            ...region,
+            latitude: (region.latitude || this._currentRegion.latitude) * 1,
+            longitude: (region.longitude || this._currentRegion.longitude) * 1,
+            latitudeDelta: (region.latitudeDelta || this._currentRegion.latitudeDelta) * 1,
+            longitudeDelta: (region.longitudeDelta || this._currentRegion.longitudeDelta) * 1
+        };
+
+        this._currentRegion = region;
+
+        if (this.map && this.map.map) {
+
+            this.map.map.setNativeProps({
+                region: region
+            });
+        }
+
+        this.props.onRegionChange && this.props.onRegionChange(region);
+    };
 
     // hàm lấy vị trí hiện tại
     _watchPosition = async () => {
 
         try {
 
-            // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
-            let statuses = await Permissions.check('location');
+            this._watchID = await require("./utils/watchPosition").default(
+                position => {
+                    if (
+                        position &&
+                        position.coords
+                    ) {
 
-            if (statuses == "undetermined") {
+                        this.setState({
+                            currentPosition: position.coords
+                        }, () => {
 
-                // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
-                statuses = await Permissions.request('location');
-            }
+                            if (this._isReady && this.props.showsUserLocation) {
 
-            if (statuses == "authorized") {
-
-                this._watchID = navigator.geolocation.watchPosition(
-                    position => {
-
-                        if (
-                            position &&
-                            position.coords
-                        ) {
-
-                            this._currentCoord = position.coords;
-
-                            if( !this._isManipulating ) {
-
-                                this.setState({
-                                    region: {
-                                        latitude: position.coords.latitude,
-                                        longitude: position.coords.longitude,
-                                        latitudeDelta: LATITUDE_DELTA,
-                                        longitudeDelta: LONGITUDE_DELTA
-                                    }
+                                this._setRegion({
+                                    ...position.coords,
+                                    latitudeDelta: LATITUDE_DELTA * 1,
+                                    longitudeDelta: LONGITUDE_DELTA * 1
                                 });
                             }
-                        }
-                    },
-                    error => { },
-                    {
-                        timeout: 30000,
-                        maximumAge: 200,
-                        enableHighAccuracy: true,
-                        distanceFilter: 10,
-                        // useSignificantChanges: true
+
+                            if (!this._isManipulating) {
+    
+                                if (this.props.followsUserLocation) {
+    
+                                    this._setRegion({
+                                        ...position.coords,
+                                        latitudeDelta: LATITUDE_DELTA * 1,
+                                        longitudeDelta: LONGITUDE_DELTA * 1
+                                    });
+                                }
+                            }
+                        });
                     }
-                );
-            }
+                }
+            );
+
         } catch (error) { }
     };
 
+    // sự kiện xoá tìm kiếm
     _onClear = () => {
 
+        // xoá marker
         this._clearSelectMarker();
 
-        this.setState({
-            region: {
-                latitude: this._currentCoord.latitude,
-                longitude: this._currentCoord.longitude,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA
-            }
-        });
-        this._isManipulating = false;
+        if( this.props.followsUserLocation || this.props.showsUserLocation ) {
+
+            // set region về vị trí hiện tại
+            this._setRegion({
+                latitude: this.state.currentPosition.latitude * 1,
+                longitude: this.state.currentPosition.longitude * 1,
+                latitudeDelta: LATITUDE_DELTA * 1,
+                longitudeDelta: LONGITUDE_DELTA * 1
+            });
+        } 
+        else if( this.props.currentPosition || this._watchID ) {
+
+            // set region về vị trí hiện tại
+            this._setRegion({
+                latitude: this.state.currentPosition.latitude * 1,
+                longitude: this.state.currentPosition.longitude * 1,
+                latitudeDelta: this._currentRegion.latitudeDelta * 1,
+                longitudeDelta: this._currentRegion.longitudeDelta * 1
+            });
+        } else {
+
+            // set region về vị trí hiện tại
+            this._setRegion(initialRegion);
+        }
     };
 
+    // sự kiện click vào vị trí hiện tại
+    _onCurrentPosition = (coordinate = {}) => {
+
+        if( this.props.showsUserLocation ) {
+
+            // set region
+            this._setRegion({
+                ...coordinate,
+                latitudeDelta: LATITUDE_DELTA * 1,
+                longitudeDelta: LONGITUDE_DELTA * 1
+            });
+        } else {
+
+            // set marker
+            this._selectMarker({
+                ...coordinate,
+                description: translate("maps.current_location")
+            }, () => {
+    
+                // set region
+                this._setRegion({
+                    ...coordinate,
+                    latitudeDelta: LATITUDE_DELTA * 1,
+                    longitudeDelta: LONGITUDE_DELTA * 1
+                });
+            });
+        }
+
+    };
+
+    // sự kiện chọn vị trí từ modal location
     _onLocationSelect = ( geo = {} ) => {
 
         const {
+            description,
             geometry: {
                 location
             } = {}
         } = geo;
 
+        // set marker
         this._selectMarker({
             latitude: location.lat,
-            longitude: location.lng
-        });
+            longitude: location.lng,
+            description
+        }, () => {
 
-        this.setState({
-            region: {
+            // set region
+            this._setRegion({
                 latitude: location.lat,
                 longitude: location.lng,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA
-            }
+                latitudeDelta: LATITUDE_DELTA * 1,
+                longitudeDelta: LONGITUDE_DELTA * 1
+            });
         });
     };
 
+    // sự kiện chọn vị trí từ map
+    _onLocationMapSelect = ( coords = {} ) => {
+
+        // set marker
+        this._selectMarker({
+            ...coords,
+            latitude: coords.latitude * 1,
+            longitude: coords.longitude * 1,
+            description: coords.name
+        }, () => {
+
+            // set region
+            this._setRegion({
+                latitude: coords.latitude * 1,
+                longitude: coords.longitude * 1,
+                latitudeDelta: LATITUDE_DELTA * 1,
+                longitudeDelta: LONGITUDE_DELTA * 1
+            });
+        });
+
+    };
+
+    // hàm xoá marker (vị trí O)
     _clearSelectMarker = () => {
 
         const selectMarker = this.state.selectMarker.slice();
         selectMarker[0] = undefined;
+        this._isManipulating = false;
 
         this.setState({
             selectMarker
         });
     };
 
-    _selectMarker = (coords) => {
+    // sự kiện click vào vị trí trên map
+    _onPoiClick = (e) => {
+
+        const {
+            coordinate,
+            name,
+            placeId
+        } = e.nativeEvent;
+
+        this._selectMarker({
+            ...coordinate,
+            place_id: placeId,
+            description: name
+        });
+
+        this.props.onPoiClick && this.props.onPoiClick(e);
+    };
+
+    // sự kiện hold
+    _onLongPress = (e) => {
+
+        this._selectMarker({
+            ...e.nativeEvent.coordinate
+        });
+        this.props.onLongPress && this.props.onLongPress(e);
+    };
+
+    // hàm hỗ trợ set marker (vị trí O)
+    _selectMarker = (coords, callback) => {
 
         this._isManipulating = true;
 
@@ -216,66 +419,7 @@ class MapView extends React.Component {
 
         this.setState({
             selectMarker
-        });
-    };
-
-    _onPress = (e) => {
-
-        this._clearSelectMarker();
-        this._isManipulating = false;
-
-        this.googleMapsClient.reverseGeocode( {
-            language: I18n.locale,
-            latlng: e.nativeEvent.coordinate
-        }, (e, res) => {
-  
-            if (!e && res.status == 200 && res.json.status == "OK" && res.json.results.length ) {
-
-                const geo = res.json.results.find( geo => {
-
-                    return (
-                        geo.types.includes("establishment") 
-                        || geo.types.includes("bus_station") 
-                        || geo.types.includes("point_of_interest")
-                        || geo.types.includes("floor")
-                        || geo.types.includes("parking")
-                        || geo.types.includes("post_box")
-                        || geo.types.includes("postal_town")
-                        || geo.types.includes("room")
-                        || geo.types.includes("train_station")
-                        || geo.types.includes("transit_station")
-                        || geo.types.includes("premise")
-                        || geo.types.includes("subpremise")
-                        || geo.types.includes("airport")
-                        || geo.types.includes("park")
-                    )
-                } );
-
-                if(geo) {
-
-                    const {
-                        geometry: {
-                            location
-                        } = {}
-                    } = geo;
-
-                    this._selectMarker({
-                        latitude: location.lat,
-                        longitude: location.lng
-                    });
-                }
-            }
-        } );
-        this.props.onPress && this.props.onPress(e);
-    };
-
-    _onLongPress = (e) => {
-
-        this._selectMarker({
-            latitude: e.nativeEvent.coordinate.latitude,
-            longitude: e.nativeEvent.coordinate.longitude
-        });
-        this.props.onLongPress && this.props.onLongPress(e);
+        }, callback);
     };
 }
 

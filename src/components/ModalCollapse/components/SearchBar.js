@@ -22,7 +22,7 @@ class SearchBar extends React.Component {
 
 	static defaultProps = {
 		keyword: "",
-		placeholder: translate("Tìm kiếm"),
+		placeholder: "Tìm kiếm",
 		geolocation: false,
 		searchToOther: false,
 		keepInput: false

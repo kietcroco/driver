@@ -10,6 +10,7 @@ import Panel from '~/components/Panel';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import verifyService from '~/services/member/verify';
 import { NavigationActions } from 'react-navigation';
+import { AUTH_IDENTITY } from '~/constants/registryKey';
 
 class ComfirmCode extends React.Component {
 
@@ -216,7 +217,9 @@ class ComfirmCode extends React.Component {
                     this.props.navigation.dispatch(NavigationActions.reset({
                         index: 0,
                         actions: [
-                            NavigationActions.navigate({ routeName: '/' })
+                            NavigationActions.navigate({ routeName: '/', params: {
+                                title: Registry.get(AUTH_IDENTITY) ? Registry.get(AUTH_IDENTITY).account_fullname : 'Home'
+                            } })
                         ]
                     }));
                     toast(translate("member.login.login_success"));

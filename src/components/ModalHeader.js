@@ -21,7 +21,7 @@ class ModalHeader extends React.Component {
 
 	static defaultProps = {
 		backgroundColor: colors.primaryColor,
-		color: colors.secondColor
+		color: "white"
 	};
 
 	shouldComponentUpdate(nextProps) {
@@ -38,21 +38,21 @@ class ModalHeader extends React.Component {
 	render() {
 
 		const { backHandle, title, children, backgroundColor, color } = this.props;
-		
+
 		return (
-			<View style={ [_styles.container, { backgroundColor }] }>
-				<TouchableOpacity hitSlop={ hitSlop } style={ _styles.btnBack } onPress={ backHandle }>
-					<FAIcon style={ [_styles.iconBack, {color}] } name="chevron-left"/>
+			<View style={[_styles.container, { backgroundColor }]}>
+				<TouchableOpacity hitSlop={hitSlop} style={_styles.btnBack} onPress={backHandle}>
+					<FAIcon style={[_styles.iconBack, { color }]} name="chevron-left" />
 				</TouchableOpacity>
-				<View style={ _styles.titleWrapper }>
+				<View style={_styles.titleWrapper}>
 					{
 						typeof title === "string" ?
-							<Text style={ [_styles.title, {color}] } numberOfLines={1}>{ title }</Text>
-						: title
+							<Text style={[_styles.title, { color }]} numberOfLines={1}>{title}</Text>
+							: title
 					}
 				</View>
-				<View style={ _styles.headerRight }>
-					{ children }
+				<View style={_styles.headerRight}>
+					{children}
 				</View>
 			</View>
 		);
@@ -70,31 +70,24 @@ const _styles = {
 		borderBottomColor: colors.primaryBorderColor
 	},
 	btnBack: {
-		width: sizes.buttonNormal,
 		height: "100%",
+		width: 30 * scale,
 		alignItems: "center",
 		justifyContent: "center"
 	},
 	iconBack: {
-		textAlign: "center",
-		textAlignVertical: "center",
 		color: colors.secondColor,
 		fontSize: 16 * scale,
 		marginTop: 2 * scale
 	},
 	titleWrapper: {
-		height: "100%",
-		justifyContent: "center",
-		flex: 1
+		// justifyContent: "center",
+		marginLeft: -30 * scale
 	},
 	title: {
-		textAlignVertical: "center",
-		color: colors.secondColor,
+		color: "white",
 		fontWeight: "bold",
 		fontSize: fontSizes.large,
-		height: "100%",
-		marginLeft: sizes.spacing,
-		marginRight: sizes.spacing
 	},
 	headerRight: {
 		height: "100%",

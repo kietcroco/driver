@@ -3,7 +3,7 @@ import formatLabel from './utils/formatLabel';
 export default {
 	visible: false,
 	multiple: false,
-	//title: translate("Chọn"),
+	//title: "Chọn",
 	delimiter: "-/-",
 	separate: ";",
 	labelDelimiter: " - ",

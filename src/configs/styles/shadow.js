@@ -1,12 +1,13 @@
 import scale from './scale';
 
 export default {
-    shadowOpacity: 0.2,
-    shadowOffset : {
-        width : 0,
-        height: 1 * scale
-    },
-    shadowColor  : '#2672ba',
-    shadowRadius : 3 * scale,
-    elevation    : 3 * scale
+    
+    // Shadow only works on iOS.
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 3, height: 3 },
+    shadowRadius: 4,
+
+    // This will elevate the view on Android, causing shadow to be drawn.
+    elevation: 5,
 };

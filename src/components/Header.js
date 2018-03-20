@@ -116,8 +116,8 @@ class Header extends React.PureComponent {
 				<Image style={_styles.logo} source={titleImage} />
 			)
 		} else {
-			let title = options.title !== undefined ? options.title :
-				(Registry.get('authIdentity') ? Registry.get('authIdentity').account_fullname : '');
+			title = options.title !== undefined ? options.title : "";
+				// (Registry.get('authIdentity') ? Registry.get('authIdentity').account_fullname : '');
 			Title = <Text numberOfLines={1} style={_styles.title}>{title}</Text>;
 		}
 

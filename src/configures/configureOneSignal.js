@@ -24,8 +24,8 @@ export default (Registry) => {
 
     // sự đăng ký lên onesignal
     const registeredHandle = e => WaitingEvent.dispatch('OneSignal.registered', e);
-    OneSignal.removeEventListener('registered', registeredHandle);
-    OneSignal.addEventListener('registered', registeredHandle);
+    // OneSignal.removeEventListener('registered', registeredHandle);
+    // OneSignal.addEventListener('registered', registeredHandle);
 
     // sự lấy id onesignal
     const idsHandle = e => {
@@ -93,7 +93,7 @@ export default (Registry) => {
             OneSignal.removeEventListener('opened', openedHandle);
             OneSignal.removeEventListener('received', receivedHandle);
             OneSignal.removeEventListener('ids', idsHandle);
-            OneSignal.removeEventListener('registered', registeredHandle);
+            // OneSignal.removeEventListener('registered', registeredHandle);
         }
     };
 };

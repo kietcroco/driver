@@ -2,8 +2,8 @@
 //  NotificationService.m
 //  OneSignalNotificationServiceExtension
 //
-//  Created by Admin on 2/23/18.
-//  Copyright © 2018 itvina.com. All rights reserved.
+//  Created by Admin on 3/6/18.
+//  Copyright © 2018 Facebook. All rights reserved.
 //
 #import <RCTOneSignalExtensionService.h>
 #import "NotificationService.h"
@@ -23,24 +23,24 @@
     self.contentHandler = contentHandler;
     self.bestAttemptContent = [request.content mutableCopy];
     
-    [RCTOneSignalExtensionService didReceiveNotificationRequest:self.receivedRequest withContent:self.bestAttemptContent];
-    
-    // // Modify the notification content here...
-    // self.bestAttemptContent.title = [NSString stringWithFormat:@"%@ [modified]", self.bestAttemptContent.title];
-    
-    // self.contentHandler(self.bestAttemptContent);
-    // DEBUGGING: Uncomment the 2 lines below and comment out the one above to ensure this extension is excuting
-    //            Note, this extension only runs when mutable-content is set
-    //            Setting an attachment or action buttons automatically adds this
-    // NSLog(@"Running NotificationServiceExtension");
-    // self.bestAttemptContent.body = [@"[Modified] " stringByAppendingString:self.bestAttemptContent.body];
-    
-    self.contentHandler(self.bestAttemptContent);
+  [RCTOneSignalExtensionService didReceiveNotificationRequest:self.receivedRequest withContent:self.bestAttemptContent];
+  
+  // // Modify the notification content here...
+  // self.bestAttemptContent.title = [NSString stringWithFormat:@"%@ [modified]", self.bestAttemptContent.title];
+  
+  // self.contentHandler(self.bestAttemptContent);
+  // DEBUGGING: Uncomment the 2 lines below and comment out the one above to ensure this extension is excuting
+  //            Note, this extension only runs when mutable-content is set
+  //            Setting an attachment or action buttons automatically adds this
+  // NSLog(@"Running NotificationServiceExtension");
+  // self.bestAttemptContent.body = [@"[Modified] " stringByAppendingString:self.bestAttemptContent.body];
+  
+  self.contentHandler(self.bestAttemptContent);
 }
 
 - (void)serviceExtensionTimeWillExpire {
-	[RCTOneSignalExtensionService serviceExtensionTimeWillExpireRequest:self.receivedRequest withMutableNotificationContent:self.bestAttemptContent];
-    
+  [RCTOneSignalExtensionService serviceExtensionTimeWillExpireRequest:self.receivedRequest withMutableNotificationContent:self.bestAttemptContent];
+  
     // Called just before the extension will be terminated by the system.
     // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
     self.contentHandler(self.bestAttemptContent);

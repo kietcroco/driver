@@ -6,15 +6,25 @@ import FleetItem from '~/components/FleetItem';
 import SearchInput from '~/components/SearchInput';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors, sizes } from '~/configs/styles';
+import * as fetchingActionType from '~/constants/fetchingActionType';
+import { AUTH_IDENTITY } from '~/constants/registryKey';
 
 class Home extends React.Component {
 
 	static displayName = "@Home";
 
 	static navigationOptions = ({ navigation, screenProps }) => {
-		// let title = Registry.get('authIdentity') ? Registry.get('authIdentity').account_fullname : 'Home';
+		let {
+			state: {
+				params: {
+					title
+				} = {}
+			}
+		} = navigation;
+		title = Registry.get(AUTH_IDENTITY) ? (Registry.get(AUTH_IDENTITY).account_fullname || title) : (title || 'Home');
+
 		return {
-			// title: '',
+			title,
 			headerRight: (<TouchableOpacity
 				onPress={() => {
 					navigation.navigate('/fleet/fleet-create');
@@ -52,6 +62,14 @@ class Home extends React.Component {
 		this.props.actions.search(this.state.textSearch);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		// if (nextProps.navigation.scene.isActive != nextProps.navigation.scene.isActive) {
+		// 	this.props.dispatch({
+		// 		type: `/home#${fetchingActionType.REFRESH}`
+		// 	});
+		// }
+	}
+
 	render() {
 		return (
 			<View style={{
@@ -77,10 +95,15 @@ class Home extends React.Component {
 					renderItem={this._renderItem}
 					keyExtractor={this._keyExtractor}
 					onEndReachedThreshold={1}
+					separator={false}
 				/>
 
 			</View>
 		);
+	}
+
+	componentDidMount() {
+
 	}
 
 	/**
@@ -95,7 +118,7 @@ class Home extends React.Component {
 				showIcon={true}
 				showBorder={true}
 				onPress={(source) => {
-					this.props.navigation.navigate('/fleet/fleet-detail', {source});
+					this.props.navigation.navigate('/fleet/fleet-detail', { source });
 				}}
 			/>
 		);

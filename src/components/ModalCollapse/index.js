@@ -187,7 +187,7 @@ class ModalCollapse extends React.Component {
 		const {
 			visible,
 			multiple,
-			title = translate("Chọn"),
+			title = "Chọn",
 			geolocation,
 			searchToOther,
 			keepInput,
@@ -195,8 +195,8 @@ class ModalCollapse extends React.Component {
 			placeholder,
 			maxLength,
 			keyboardType,
-			labelApply = translate("Áp dụng"),
-			labelClear = translate("Bỏ chọn")
+			labelApply = "Áp dụng",
+			labelClear = "Bỏ chọn"
 		} = this.props;
 
 		return (

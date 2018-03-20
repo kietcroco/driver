@@ -157,7 +157,7 @@ export default async ( Cache, configs = {} ) => {
                 const data = await I18n.loadTranslation(locale);
 
                 // clear các dữ liệu ngôn ngữ khác
-                initTranslation();
+                // initTranslation();
 
                 // set lại dữ liệu ngôn ngữ hiện tại
                 setTranslation(locale, data);

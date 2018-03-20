@@ -104,12 +104,12 @@ def appName = "ITVINADriver"
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         applicationId "com.itvinadriver"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 23
         multiDexEnabled true
         versionCode 1
         versionName "0.0.1"
@@ -219,10 +219,17 @@ android {
 
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:26.0.1"
+    compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
 
-    compile project(':react-native-fbsdk')
+    // compile project(':react-native-fbsdk')
+    compile(project(':react-native-fbsdk')){
+      exclude group: 'com.facebook.android', module: 'facebook-android-sdk'
+    }
+    // compile "com.facebook.android:facebook-android-sdk:4.22.1"
+    // compile 'com.android.support:support-v4:23+'
+
+    compile project(':react-native-interactable')
     compile project(':react-native-exception-handler')
     compile project(':react-native-vector-icons')
     compile project(':react-native-smart-splash-screen')

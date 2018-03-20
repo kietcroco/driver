@@ -15,8 +15,8 @@ class Footer extends React.Component {
 	};
 
 	static defaultProps = {
-		labelApply: translate("Áp dụng"),
-		labelClear: translate("Bỏ chọn")
+		labelApply: "Áp dụng",
+		labelClear: "Bỏ chọn"
 	};
 
 	shouldComponentUpdate(nextProps) {
@@ -35,16 +35,16 @@ class Footer extends React.Component {
 
 		return (
 
-			<View style={ _styles.container }>
+			<View style={_styles.container}>
 				{
-					clearHandle && <TouchableOpacity activeOpacity={ colors.activeOpacity } style={ _styles.btnClear } onPress={ clearHandle }>
-						<Text style={ _styles.labelClear }>{ labelClear }</Text>
+					clearHandle && <TouchableOpacity activeOpacity={colors.activeOpacity} style={_styles.btnClear} onPress={clearHandle}>
+						<Text style={_styles.labelClear}>{labelClear}</Text>
 					</TouchableOpacity>
 				}
 				{
 
-					applyHandle && <TouchableOpacity style={ _styles.btnApply } onPress={ applyHandle } activeOpacity={ colors.activeOpacity }>
-						<Text style={ _styles.labelApply }>{ labelApply }</Text>
+					applyHandle && <TouchableOpacity style={_styles.btnApply} onPress={applyHandle} activeOpacity={colors.activeOpacity}>
+						<Text style={_styles.labelApply}>{labelApply}</Text>
 					</TouchableOpacity>
 				}
 			</View>
@@ -64,7 +64,7 @@ const _styles = {
 		backgroundColor: colors.secondBackgroundColor,
 		alignItems: "center",
 		justifyContent: "center"
-		
+
 	},
 	labelClear: {
 		fontSize: fontSizes.normal,
@@ -78,7 +78,7 @@ const _styles = {
 	},
 	labelApply: {
 		color: colors.secondColor,
-		fontSize: fontSizes.normal 
+		fontSize: fontSizes.normal
 	}
 };
 

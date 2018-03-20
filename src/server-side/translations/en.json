@@ -75,5 +75,11 @@
         "language": "Language",
         "gps": "GPS",
         "notification": "Notification"
+    },
+    "tabNavigator": {
+        "Home" : "Home",
+        "Setting": "Setting",
+        "Notification": "Notification",
+        "Profile": "Profile"
     }
 }

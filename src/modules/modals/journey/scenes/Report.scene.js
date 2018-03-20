@@ -1,8 +1,10 @@
 "use strict";
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
-import MapView from '../components/MapView';
+import { View, Text, Animated } from 'react-native';
+import MapView from '~/components/MapView';
+import NavigationBar from '../components/NavigationBar';
+import Interactable from 'react-native-interactable';
 
 class Report extends React.Component {
 
@@ -15,13 +17,41 @@ class Report extends React.Component {
     constructor(props) {
         super(props);
 
+        this._deltaY = new Animated.Value(0);
     }
 
     render() {
 
         return (
             <View style={_styles.container}>
-                <MapView style={_styles.mapView}/>
+                <MapView 
+                    searchBar = {true}
+                    showsUserLocation = {true}
+                    followsUserLocation = {true}
+                    showsMyLocationButton = {true}
+                    style={_styles.mapView}
+                />
+                
+                <Interactable.View
+                    style = {{
+                        zIndex: 100
+                    }}
+                    snapPoints={[{ y: 0 }, {y: -150}]}
+                    boundaries={{ top: -150 }}
+                    dragEnabled = {true}
+                    verticalOnly={true}
+                    animatedValueY={this._deltaY}
+                >
+                    <View style={{
+                        backgroundColor: "white",
+                        zIndex: 1000
+                    }}>
+                        <NavigationBar style={{
+                            height: 50,
+                            backgroundColor: "red"
+                        }}/>
+                    </View>
+                </Interactable.View>
             </View>
         );
     }

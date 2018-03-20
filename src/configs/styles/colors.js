@@ -7,7 +7,8 @@ export default {
     primaryColor               :"#1371b5",
     primaryBorderColor         : '#d2d2d2',
     disableColor               : "#b2b2b2", // màu disable chung
-
+    normalColor                  : "#2d2d2d", //"#979797", // màu chữ bình thường
+    
     // text
     textColor                  : "#393939", // màu đen nhạt chữ bình thường
     textBoldColor              : "#005068", // màu đen đậm chữ in đậm

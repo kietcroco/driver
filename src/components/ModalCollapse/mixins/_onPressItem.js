@@ -10,7 +10,7 @@ export default function (rowData, sectionID, rowID, levels) {
 		return val.checked === true;
 	});
 	if (this.props.limitItem && count.length == this.props.limitItem) {
-		Alert.alert(translate('Thông báo'), `${translate('Bạn chỉ được phép chọn tối đa')} ` + this.props.limitItem);
+		Alert.alert('Thông báo', `${'Bạn chỉ được phép chọn tối đa'} ` + this.props.limitItem);
 		return;
 	}
 	if (!rowData.checked) {

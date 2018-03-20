@@ -6,8 +6,21 @@
         "latitudeDelta": 15.277993753164909,
         "longitudeDelta": 9.950986728072195
     },
+    // zoom mapview
     "LATITUDE_DELTA": 0.0922,
     "LONGITUDE_DELTA": 0.0421,
+    // vị trí init marker
+    "initialCoordinate": {
+        "latitude": 10.786516250757456,
+        "longitude": 106.67970132082701
+    },
+    "geoOptions": {
+        "timeout": 30000,
+        "maximumAge": 200,
+        "enableHighAccuracy": true,
+        "distanceFilter": 10
+        // useSignificantChanges: true
+    },
     // place api key
     "google_api_key": "AIzaSyBtvPriRmsBry0aKK_PGuHPnxxWVQs5lbg",
     "types": ["geocode", "establishment"],

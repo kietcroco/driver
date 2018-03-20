@@ -52,19 +52,16 @@ class Setting extends React.Component {
 
         return (
             <View style={_styles.container}>
-                <Text style = {_styles.wireless_networks}>{translate("setting.wireless_networks")}</Text>
                 <View style={_styles.view_inside_container}>
                     <View style={_styles.view_title}>
-                        <MIcon name={'network-wifi'}
+                        <MCIcon name={'web'}
                             style={_styles.style_icon}
                         />
                         <Text style={_styles.style_padding_left}>{translate('setting.language')}</Text>
                     </View>
                     <View style={_styles.view_language}>
                         <Picker
-                            
                             style={_styles.picker_language}
-                            itemStyle={{color: 'red'}}
                             selectedValue={this.state.language}
                             mode="dropdown"
                             onValueChange={(itemValue, itemIndex) => {
@@ -82,11 +79,9 @@ class Setting extends React.Component {
                 </View>
                 <View style={_styles.view_inside_container}>
                     <View style={_styles.view_title}>
-                        
-                        <MCIcon name={'bluetooth'}
+                        <MCIcon name={'crosshairs-gps'}
                             style={_styles.style_icon}
                         />
-                        
                         <Text style={_styles.style_padding_left}>{translate('setting.gps')}</Text>
                     </View>
                     <Switch
@@ -96,10 +91,8 @@ class Setting extends React.Component {
                             if (this.state.color_switch_gps == null) colr_switch = colors.headerBackgroundColor;
                             this.setState({
                                 ...this.state,
-                                
                                 gps: !this.state.gps,
                                 color_switch_gps: colr_switch
-
                             })
                         }}
                         onTintColor={colors.headerBackgroundColor}
@@ -108,11 +101,9 @@ class Setting extends React.Component {
                 </View>
                 <View style={_styles.view_inside_container}>
                     <View style={_styles.view_title}>
-                        
-                        <MCIcon name={'chart-donut'}
+                        <MCIcon name={'bell-ring'}
                             style={_styles.style_icon}
                         />
-                        
                         <Text style={_styles.style_padding_left}>{translate('setting.notification')}</Text>
                     </View>
                     <Switch
@@ -121,15 +112,13 @@ class Setting extends React.Component {
                             let colr_switch = null;
                             if (this.state.color_switch_notification == null) colr_switch = colors.headerBackgroundColor;
                             this.setState({
-                                ...this.state,
-                               
+                                ...this.state, 
                                 notification: !this.state.notification,
                                 color_switch_notification: colr_switch
                             })
                         }}
                         onTintColor={colors.headerBackgroundColor}
                         thumbTintColor= {this.state.color_switch_notification}
-                        
                     />
                 </View>
             </View>
@@ -144,9 +133,7 @@ class Setting extends React.Component {
     }
 
     componentWillUnmount() {
-
         if (this._eventLocaleChange && this._eventLocaleChange.remove) {
-
             this._eventLocaleChange.remove();
         }
     }
@@ -176,7 +163,7 @@ const _styles = {
     iconBack: {
         textAlign: "center",
         color: colors.textSinkingColor,
-        fontSize: 16 * scale,
+        fontSize: fontSizes.large * scale,
         marginTop: 2 * scale
     },
     view_inside_container: {
@@ -188,7 +175,7 @@ const _styles = {
         flexDirection: 'row'
     },
     style_padding_left: {
-        paddingLeft: 15 * scale,
+        paddingLeft: sizes.large,
  
         color: colors.textColor,
         fontSize: fontSizes.normal

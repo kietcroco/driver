@@ -35,5 +35,12 @@ allprojects {
         // maven {
         //     url "https://dl.google.com/dl/android/maven2"
         // }
+        // configurations.all {
+        //     resolutionStrategy {
+        //         force 'com.facebook.android:facebook-android-sdk:4.22.1'
+        //         // force 'com.facebook.android:facebook-android-sdk:4.28.0'
+        //         // force 'com.android.support:support-v4:23+'
+        //     }
+        // }
     }
 }
